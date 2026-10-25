@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<title>Ρυθμίσεις – Συνδρομές</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button,select,input{font-family:inherit}
+input:focus,select:focus{outline:2px solid #0a5bc4;outline-offset:1px}
+</style>
+</helmet>
+<div style="position: relative; overflow: hidden; min-height: 1300px; box-sizing: border-box; background: #dfe7fb; font-family: -apple-system, 'SF Pro Display', 'Inter', system-ui, sans-serif; color: #1d1d24">
+
+<div style="position: absolute; top: -140px; left: -120px; width: 520px; height: 520px; border-radius: 50%; background: #7aa2ff; filter: blur(70px); opacity: 0.75"></div>
+<div style="position: absolute; top: 160px; right: -160px; width: 560px; height: 560px; border-radius: 50%; background: #c9a6ff; filter: blur(80px); opacity: 0.7"></div>
+<div style="position: absolute; bottom: -180px; left: 22%; width: 600px; height: 600px; border-radius: 50%; background: #7fe3d0; filter: blur(80px); opacity: 0.65"></div>
+<div style="position: absolute; bottom: 120px; right: 8%; width: 320px; height: 320px; border-radius: 50%; background: #ffc2a1; filter: blur(70px); opacity: 0.7"></div>
+
+<div style="position: relative; max-width: 1200px; margin: 0 auto; padding: 28px 32px 56px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+
+<nav style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px 10px 20px; border-radius: 999px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.14)">
+<div style="display: flex; align-items: center; gap: 22px; flex-wrap: wrap">
+<div style="font-size: 17px; font-weight: 600; letter-spacing: -0.2px">Συνδρομές</div>
+<div style="display: flex; gap: 4px; flex-wrap: wrap">
+<a href="Main.dc.html" style="padding: 9px 16px; border-radius: 999px; font-size: 14px; color: #3f4358">Αρχική</a>
+<a href="Subscriptions.dc.html" style="padding: 9px 16px; border-radius: 999px; font-size: 14px; color: #3f4358">Συνδρομές</a>
+<a href="Reports.dc.html" style="padding: 9px 16px; border-radius: 999px; font-size: 14px; color: #3f4358">Αναφορές</a>
+<a href="Calendar.dc.html" style="padding: 9px 16px; border-radius: 999px; font-size: 14px; color: #3f4358">Ημερολόγιο</a>
+<a href="Settings.dc.html" style="padding: 9px 16px; border-radius: 999px; background: rgba(255,255,255,0.8); box-shadow: inset 0 1px 0 #ffffff, 0 2px 8px rgba(60,70,160,0.12); font-size: 14px; font-weight: 600">Ρυθμίσεις</a>
+</div>
+</div>
+<a href="NewSubscription.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.6); background: rgba(10,91,196,0.92); color: #ffffff; font-size: 14px; font-weight: 600; box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), 0 6px 18px rgba(10,91,196,0.35)">+ Νέα συνδρομή</a>
+</nav>
+
+<h1 style="margin: 0; font-size: 30px; font-weight: 600; letter-spacing: -0.6px">Ρυθμίσεις</h1>
+
+<div style="padding: 24px 26px; border-radius: 28px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.12)">
+<div style="font-size: 18px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 14px">Γενικά</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="lang" style="font-size: 13px; font-weight: 600">Γλώσσα</label>
+<select id="lang" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24">
+<option>Ελληνικά</option>
+<option>English</option>
+</select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="cur" style="font-size: 13px; font-weight: 600">Νόμισμα</label>
+<select id="cur" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24">
+<option>Ευρώ (€)</option>
+<option>Δολάριο ΗΠΑ ($)</option>
+<option>Λίρα Αγγλίας (£)</option>
+<option>Ελβετικό φράγκο (CHF)</option>
+</select>
+<div style="font-size: 12px; color: #4b4f63">Αλλάζει μόνο το σύμβολο. Τα ποσά δεν μετατρέπονται.</div>
+</div>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+
+<div style="flex: 1 1 420px; min-width: 0; padding: 24px 26px; border-radius: 28px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.12)">
+<div style="font-size: 18px; font-weight: 600; letter-spacing: -0.3px">Κατηγορίες</div>
+<div style="font-size: 13px; color: #4b4f63; margin: 4px 0 12px">Κάθε συνδρομή ανήκει σε μία κατηγορία.</div>
+
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 12px; margin-bottom: 6px; border-radius: 16px; background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.7)">
+<div style="font-size: 15px; font-weight: 600">Gaming <span style="font-size: 12px; font-weight: 400; color: #4b4f63">· 0 συνδρομές</span></div>
+<div style="display: flex; gap: 2px"><button style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; font-size: 13px; font-weight: 600; color: #0a5bc4; cursor: pointer">Μετονομασία</button><button style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; font-size: 13px; font-weight: 600; color: #a32020; cursor: pointer">Διαγραφή</button></div>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 12px; margin-bottom: 6px; border-radius: 16px; background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.7)">
+<div style="font-size: 15px; font-weight: 600">Παραγωγικότητα <span style="font-size: 12px; font-weight: 400; color: #4b4f63">· 0 συνδρομές</span></div>
+<div style="display: flex; gap: 2px"><button style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; font-size: 13px; font-weight: 600; color: #0a5bc4; cursor: pointer">Μετονομασία</button><button style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; font-size: 13px; font-weight: 600; color: #a32020; cursor: pointer">Διαγραφή</button></div>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 12px; margin-bottom: 6px; border-radius: 16px; background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.7)">
+<div style="font-size: 15px; font-weight: 600">Streaming <span style="font-size: 12px; font-weight: 400; color: #4b4f63">· 0 συνδρομές</span></div>
+<div style="display: flex; gap: 2px"><button style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; font-size: 13px; font-weight: 600; color: #0a5bc4; cursor: pointer">Μετονομασία</button><button style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; font-size: 13px; font-weight: 600; color: #a32020; cursor: pointer">Διαγραφή</button></div>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 12px; margin-bottom: 6px; border-radius: 16px; background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.7)">
+<div style="font-size: 15px; font-weight: 600">Ενέργεια και λογαριασμοί <span style="font-size: 12px; font-weight: 400; color: #4b4f63">· 0 υποχρεώσεις</span></div>
+<div style="display: flex; gap: 2px"><button style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; font-size: 13px; font-weight: 600; color: #0a5bc4; cursor: pointer">Μετονομασία</button><button style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; font-size: 13px; font-weight: 600; color: #a32020; cursor: pointer">Διαγραφή</button></div>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 12px; margin-bottom: 6px; border-radius: 16px; background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.7)">
+<div style="font-size: 15px; font-weight: 600">Τηλεπικοινωνίες <span style="font-size: 12px; font-weight: 400; color: #4b4f63">· 0 υποχρεώσεις</span></div>
+<div style="display: flex; gap: 2px"><button style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; font-size: 13px; font-weight: 600; color: #0a5bc4; cursor: pointer">Μετονομασία</button><button style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; font-size: 13px; font-weight: 600; color: #a32020; cursor: pointer">Διαγραφή</button></div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px">
+<label for="newcat" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Νέα κατηγορία</label>
+<input id="newcat" type="text" placeholder="Νέα κατηγορία" style="flex: 1 1 160px; min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24">
+<button style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.8); font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: inset 0 1px 0 #ffffff">Προσθήκη</button>
+</div>
+<div style="margin-top: 10px; font-size: 12px; color: #4b4f63">Σε περίπτωση διαγραφής κατηγορίας που χρησιμοποιείται, απαιτείται επιλογή νέας κατηγορίας για τις συνδρομές της.</div>
+</div>
+
+<div style="flex: 1 1 420px; min-width: 0; padding: 24px 26px; border-radius: 28px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.12)">
+<div style="font-size: 18px; font-weight: 600; letter-spacing: -0.3px">Κάρτες</div>
+<div style="font-size: 13px; color: #4b4f63; margin: 4px 0 12px">Μόνο φιλικά ονόματα, για την αναφορά ανά τρόπο πληρωμής. Η εφαρμογή δεν αποθηκεύει αριθμούς καρτών ή άλλα τραπεζικά στοιχεία.</div>
+
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 12px; margin-bottom: 6px; border-radius: 16px; background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.7)">
+<div style="font-size: 15px; font-weight: 600">«Κύρια κάρτα» <span style="font-size: 12px; font-weight: 400; color: #4b4f63">· 0 συνδρομές</span></div>
+<div style="display: flex; gap: 2px"><button style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; font-size: 13px; font-weight: 600; color: #0a5bc4; cursor: pointer">Μετονομασία</button><button style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; font-size: 13px; font-weight: 600; color: #a32020; cursor: pointer">Διαγραφή</button></div>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 12px; margin-bottom: 6px; border-radius: 16px; background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.7)">
+<div style="font-size: 15px; font-weight: 600">«Κάρτα εργασίας» <span style="font-size: 12px; font-weight: 400; color: #4b4f63">· 0 συνδρομές</span></div>
+<div style="display: flex; gap: 2px"><button style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; font-size: 13px; font-weight: 600; color: #0a5bc4; cursor: pointer">Μετονομασία</button><button style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; font-size: 13px; font-weight: 600; color: #a32020; cursor: pointer">Διαγραφή</button></div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px">
+<label for="newcard" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Νέο όνομα κάρτας</label>
+<input id="newcard" type="text" placeholder="π.χ. Κύρια κάρτα" style="flex: 1 1 160px; min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24">
+<button style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.8); font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: inset 0 1px 0 #ffffff">Προσθήκη</button>
+</div>
+<div style="margin-top: 10px; font-size: 12px; color: #4b4f63">Καταχωρείται μόνο ένα όνομα. Δεν πρέπει να εισάγονται αριθμός κάρτας, ημερομηνία λήξης ή κωδικός.</div>
+</div>
+
+</div>
+
+<div style="padding: 24px 26px; border-radius: 28px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.12); display: flex; flex-direction: column; gap: 18px">
+<div>
+<div style="font-size: 18px; font-weight: 600; letter-spacing: -0.3px">Ειδοποιήσεις</div>
+<div style="font-size: 13px; color: #4b4f63; margin-top: 4px">Υπενθυμίσεις πριν από κάθε πληρωμή και για λογαριασμούς που δεν έχουν καταχωρηθεί.</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="days" style="font-size: 13px; font-weight: 600">Πόσες ημέρες πριν</label>
+<select id="days" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24">
+<option>7 ημέρες πριν</option>
+<option>3 ημέρες πριν</option>
+<option>1 ημέρα πριν</option>
+</select>
+<div style="font-size: 12px; color: #4b4f63">Προεπιλογή για νέες συνδρομές. Μπορεί να τροποποιηθεί σε κάθε συνδρομή.</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="hour" style="font-size: 13px; font-weight: 600">Ώρα αποστολής</label>
+<select id="hour" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24">
+<option>09:00</option>
+<option>08:00</option>
+<option>12:00</option>
+<option>18:00</option>
+</select>
+</div>
+</div>
+
+<label style="display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 14px"><input type="checkbox" checked style="width: 18px; height: 18px">Υπενθύμιση όταν περάσει η ημερομηνία ενός λογαριασμού και δεν έχει καταχωρηθεί ποσό</label>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<div style="flex: 1 1 320px; min-width: 0; padding: 18px; border-radius: 22px; background: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.75); display: flex; flex-direction: column; gap: 12px">
+<label style="display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; font-weight: 600"><input type="checkbox" checked style="width: 18px; height: 18px">Email</label>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="mail" style="font-size: 13px; font-weight: 600">Διεύθυνση παραλήπτη</label>
+<input id="mail" type="email" placeholder="name@company.com" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24">
+</div>
+<div style="font-size: 12px; color: #4b4f63">Ο τρόπος αποστολής (διακομιστής email) θα καθοριστεί στο έγγραφο προδιαγραφών, μετά από έλεγχο της τεκμηρίωσης.</div>
+</div>
+
+<div style="flex: 1 1 320px; min-width: 0; padding: 18px; border-radius: 22px; background: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.75); display: flex; flex-direction: column; gap: 12px">
+<label style="display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; font-weight: 600"><input type="checkbox" checked style="width: 18px; height: 18px">Pushover (ειδοποιήσεις στο κινητό)</label>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="pukey" style="font-size: 13px; font-weight: 600">Κλειδί χρήστη</label>
+<input id="pukey" type="text" placeholder="Από τον λογαριασμό Pushover" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="putoken" style="font-size: 13px; font-weight: 600">Κλειδί εφαρμογής</label>
+<input id="putoken" type="password" autocomplete="off" placeholder="Δημιουργείται στο Pushover" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24">
+</div>
+<div style="font-size: 12px; color: #4b4f63">Τα ακριβή βήματα και τα στοιχεία που χρειάζονται θα επιβεβαιωθούν στην επίσημη τεκμηρίωση του Pushover.</div>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<button style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.8); font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: inset 0 1px 0 #ffffff">Αποστολή δοκιμαστικής ειδοποίησης</button>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px">
+<a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 22px; border-radius: 999px; background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.85); font-size: 14px; font-weight: 600; box-shadow: inset 0 1px 0 #ffffff">Ακύρωση</a>
+<a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 24px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.6); background: rgba(10,91,196,0.92); color: #ffffff; font-size: 14px; font-weight: 600; box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), 0 6px 18px rgba(10,91,196,0.35)">Αποθήκευση</a>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1300}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

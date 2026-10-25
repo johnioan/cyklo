@@ -1,0 +1,7 @@
+#!/bin/sh
+# Keep a copy of the data in the temporary upgrade folder (documented SYNOPKG_TEMP_UPGRADE_FOLDER).
+VAR=/var/packages/cyklosub/var
+if [ -n "$SYNOPKG_TEMP_UPGRADE_FOLDER" ] && [ -d "$VAR/data" ]; then
+  mkdir -p "$SYNOPKG_TEMP_UPGRADE_FOLDER/cyklo" && cp -a "$VAR/data" "$SYNOPKG_TEMP_UPGRADE_FOLDER/cyklo/" 2>/dev/null
+fi
+exit 0

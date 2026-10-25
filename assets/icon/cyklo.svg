@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f86ff"/>
+      <stop offset="0.55" stop-color="#7a5cf2"/>
+      <stop offset="1" stop-color="#1fb5c9"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#dfe9ff" stop-opacity="0.82"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="dot" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#fff2b8"/>
+      <stop offset="1" stop-color="#ffb43a"/>
+    </radialGradient>
+    <filter id="sh" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="22" stdDeviation="26" flood-color="#1b1f6b" flood-opacity="0.38"/>
+    </filter>
+    <clipPath id="tile"><rect x="0" y="0" width="1024" height="1024" rx="230"/></clipPath>
+  </defs>
+  <rect width="1024" height="1024" rx="230" fill="url(#bg)"/>
+  <g clip-path="url(#tile)">
+    <circle cx="190" cy="120" r="330" fill="#9ec0ff" opacity="0.45"/>
+    <circle cx="880" cy="930" r="360" fill="#5ff0d0" opacity="0.35"/>
+    <ellipse cx="512" cy="-120" rx="760" ry="560" fill="url(#sheen)"/>
+  </g>
+  <circle cx="512" cy="512" r="118" fill="#ffffff" fill-opacity="0.2" stroke="#ffffff" stroke-opacity="0.55" stroke-width="6"/>
+  <g filter="url(#sh)">
+    <circle cx="512" cy="512" r="244" fill="none" stroke="url(#ring)" stroke-width="104" stroke-linecap="round" stroke-dasharray="1150 4000"/>
+    <circle cx="684" cy="340" r="52" fill="url(#dot)"/>
+  </g>
+  <rect x="3" y="3" width="1018" height="1018" rx="227" fill="none" stroke="#ffffff" stroke-opacity="0.4" stroke-width="6"/>
+</svg>

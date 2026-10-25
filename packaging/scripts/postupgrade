@@ -1,0 +1,8 @@
+#!/bin/sh
+# Restore the data only if the new installation has none.
+VAR=/var/packages/cyklosub/var
+SRC="$SYNOPKG_TEMP_UPGRADE_FOLDER/cyklo/data"
+if [ -n "$SYNOPKG_TEMP_UPGRADE_FOLDER" ] && [ -d "$SRC" ] && [ ! -f "$VAR/data/data.json" ]; then
+  mkdir -p "$VAR" && cp -a "$SRC" "$VAR/" 2>/dev/null
+fi
+exit 0

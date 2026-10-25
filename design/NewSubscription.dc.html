@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<title>Νέα συνδρομή</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button,select,input,textarea{font-family:inherit}
+input:focus,select:focus,textarea:focus{outline:2px solid #0a5bc4;outline-offset:1px}
+.tip{position:relative;display:inline-flex;align-items:center}
+.tip button{position:relative;width:22px;height:22px;padding:0;border-radius:50%;border:1px solid rgba(10,91,196,0.55);background:rgba(255,255,255,0.85);color:#0a5bc4;font-size:12px;font-weight:700;line-height:1;cursor:help}
+.tip button::before{content:'';position:absolute;top:-11px;right:-11px;bottom:-11px;left:-11px}
+.tipbox{display:none;position:absolute;top:28px;left:-6px;z-index:30;width:280px;box-sizing:border-box;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,0.97);border:1px solid rgba(255,255,255,0.95);box-shadow:0 10px 30px rgba(60,70,160,0.28);font-size:12.5px;font-weight:400;line-height:1.45;color:#1d1d24}
+.tip:hover .tipbox,.tip:focus-within .tipbox{display:block}
+</style>
+</helmet>
+<div style="position: relative; overflow: hidden; min-height: 1100px; box-sizing: border-box; background: #dfe7fb; font-family: -apple-system, 'SF Pro Display', 'Inter', system-ui, sans-serif; color: #1d1d24">
+
+<div style="position: absolute; top: -140px; left: -120px; width: 520px; height: 520px; border-radius: 50%; background: #7aa2ff; filter: blur(70px); opacity: 0.75"></div>
+<div style="position: absolute; top: 160px; right: -160px; width: 560px; height: 560px; border-radius: 50%; background: #c9a6ff; filter: blur(80px); opacity: 0.7"></div>
+<div style="position: absolute; bottom: -180px; left: 18%; width: 600px; height: 600px; border-radius: 50%; background: #7fe3d0; filter: blur(80px); opacity: 0.65"></div>
+<div style="position: absolute; bottom: 120px; right: 6%; width: 320px; height: 320px; border-radius: 50%; background: #ffc2a1; filter: blur(70px); opacity: 0.7"></div>
+
+<div style="position: relative; max-width: 760px; margin: 0 auto; padding: 28px 24px 56px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: 999px; background: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.8); font-size: 14px; font-weight: 600; box-shadow: inset 0 1px 0 #ffffff">← Πίσω</a>
+<div style="font-size: 13px; color: #3f4358">Νόμισμα: € (από τις Ρυθμίσεις)</div>
+</div>
+
+<h1 style="margin: 0; font-size: 30px; font-weight: 600; letter-spacing: -0.6px">Νέα συνδρομή</h1>
+
+<div style="padding: 26px 28px; border-radius: 28px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.12); display: flex; flex-direction: column; gap: 20px">
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="company" style="font-size: 13px; font-weight: 600">Εταιρεία</label>
+<input id="company" type="text" placeholder="Όνομα εταιρείας" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="service" style="font-size: 13px; font-weight: 600">Υπηρεσία</label>
+<input id="service" type="text" placeholder="Όνομα υπηρεσίας ή πακέτου" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24">
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: center; gap: 8px"><label for="category" style="font-size: 13px; font-weight: 600">Κατηγορία</label><span class="tip"><button type="button" aria-label="Πληροφορίες για την κατηγορία">i</button><span class="tipbox" role="tooltip">Η κατηγορία χρησιμοποιείται στις αναφορές και στα φίλτρα. Κάθε συνδρομή ανήκει σε μία κατηγορία.</span></span></div>
+<select id="category" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24">
+<option>Gaming</option>
+<option>Παραγωγικότητα</option>
+<option>Streaming</option>
+<option>Ενέργεια και λογαριασμοί</option>
+<option>Τηλεπικοινωνίες</option>
+<option>Άλλο</option>
+</select>
+<div style="font-size: 12px; color: #4b4f63">Κάθε συνδρομή ανήκει σε μία κατηγορία. Οι κατηγορίες διαχειρίζονται από τις Ρυθμίσεις.</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 8px"><div style="font-size: 13px; font-weight: 600">Είδος ποσού</div><span class="tip"><button type="button" aria-label="Πληροφορίες για το είδος ποσού">i</button><span class="tipbox" role="tooltip">Σταθερό: το ποσό είναι ίδιο σε κάθε χρέωση. Μεταβλητό: το ποσό διαφέρει (π.χ. ρεύμα, νερό) και καταχωρείται όταν εκδοθεί ο λογαριασμός.</span></span></div>
+<div style="align-self: flex-start; display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 999px; background: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.8)">
+<button onClick="{{ pickFixed }}" style="{{ fixedStyle }}">Σταθερό ποσό</button>
+<button onClick="{{ pickVariable }}" style="{{ variableStyle }}">Μεταβλητό ποσό</button>
+</div>
+</div>
+
+<sc-if value="{{ isFixed }}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="cost" style="font-size: 13px; font-weight: 600">Κόστος (€)</label>
+<input id="cost" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0,00" style="min-height: 44px; max-width: 240px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24">
+</div>
+</sc-if>
+<sc-if value="{{ isVariable }}" hint-placeholder-val="{{ false }}">
+<div style="padding: 12px 16px; border-radius: 16px; background: rgba(255,224,150,0.5); border: 1px solid rgba(255,255,255,0.7); font-size: 14px; color: #5c3b00">Δεν απαιτείται ποσό τώρα. Το ποσό καταχωρείται όταν εκδοθεί ο λογαριασμός και αποστέλλεται ειδοποίηση αν παρέλθει η ημερομηνία χωρίς καταχώρηση.</div>
+</sc-if>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: center; gap: 8px"><label for="freq" style="font-size: 13px; font-weight: 600">Συχνότητα χρέωσης</label><span class="tip"><button type="button" aria-label="Πληροφορίες για τη συχνότητα χρέωσης">i</button><span class="tipbox" role="tooltip">Κάθε πότε χρεώνεται η συνδρομή. Η συχνότητα καθορίζει τον υπολογισμό της επόμενης πληρωμής.</span></span></div>
+<select id="freq" onChange="{{ onFreq }}" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24">
+<option>Μηνιαία</option>
+<option>Ετήσια</option>
+<option>Τριμηνιαία</option>
+<option>Εξαμηνιαία</option>
+<option>Εβδομαδιαία</option>
+</select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: center; gap: 8px"><label for="start" style="font-size: 13px; font-weight: 600">Ημερομηνία έναρξης</label><span class="tip"><button type="button" aria-label="Πληροφορίες για την ημερομηνία έναρξης">i</button><span class="tipbox" role="tooltip">Ημερομηνία της πρώτης χρέωσης της συνδρομής. Η επόμενη πληρωμή υπολογίζεται αυτόματα με βάση τη συχνότητα. Αν η συνδρομή ξεκίνησε στο παρελθόν, εμφανίζεται η πρώτη επερχόμενη ημερομηνία.</span></span></div>
+<input id="start" type="date" onChange="{{ onStart }}" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24">
+</div>
+</div>
+
+<sc-if value="{{ isAuto }}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: -8px; font-size: 14px">
+<span style="color: #4b4f63">Επόμενη πληρωμή:</span><span class="tip"><button type="button" aria-label="Πληροφορίες για την επόμενη πληρωμή">i</button><span class="tipbox" role="tooltip">Υπολογίζεται αυτόματα από την ημερομηνία έναρξης και τη συχνότητα. Η χειροκίνητη αλλαγή χρησιμοποιείται όταν η πραγματική χρέωση πέφτει σε άλλη ημερομηνία.</span></span>
+<span style="font-weight: 600">{{ nextText }}</span>
+<button onClick="{{ toggleManual }}" style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; font-size: 13px; font-weight: 600; color: #0a5bc4; cursor: pointer">Αλλαγή</button>
+</div>
+</sc-if>
+<sc-if value="{{ isManual }}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: -8px">
+<label for="next" style="font-size: 14px; color: #4b4f63">Επόμενη πληρωμή:</label>
+<input id="next" type="date" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24">
+<button onClick="{{ toggleManual }}" style="min-height: 44px; padding: 0 10px; border: 0; background: transparent; font-size: 13px; font-weight: 600; color: #0a5bc4; cursor: pointer">Αυτόματος υπολογισμός</button>
+</div>
+</sc-if>
+
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="method" style="font-size: 13px; font-weight: 600">Τρόπος πληρωμής</label>
+<select id="method" onChange="{{ onMethod }}" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24">
+<option value="card">Πιστωτική κάρτα</option>
+<option value="paypal">PayPal</option>
+<option value="applepay">Apple Pay</option>
+</select>
+</div>
+
+<sc-if value="{{ isCard }}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 16px; border-radius: 20px; background: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.75)">
+<div style="display: flex; align-items: center; gap: 8px"><label for="cardname" style="font-size: 13px; font-weight: 600">Κάρτα (προαιρετικό)</label><span class="tip"><button type="button" aria-label="Πληροφορίες για την κάρτα">i</button><span class="tipbox" role="tooltip">Φιλικό όνομα κάρτας, μόνο για την αναφορά ανά τρόπο πληρωμής. Τα ονόματα των καρτών διαχειρίζονται από τις Ρυθμίσεις. Η εφαρμογή δεν αποθηκεύει αριθμούς καρτών ή άλλα τραπεζικά στοιχεία.</span></span></div>
+<select id="cardname" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24">
+<option>Χωρίς όνομα</option>
+<option>«Κύρια κάρτα»</option>
+<option>«Κάρτα εργασίας»</option>
+</select>
+</div>
+</sc-if>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 8px"><div style="font-size: 13px; font-weight: 600">Υπενθύμιση πληρωμής</div><span class="tip"><button type="button" aria-label="Πληροφορίες για την υπενθύμιση">i</button><span class="tipbox" role="tooltip">Αποστέλλεται ειδοποίηση πριν από την ημερομηνία πληρωμής, μέσω των καναλιών που ρυθμίστηκαν στις Ρυθμίσεις.</span></span></div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px">
+<label for="remind" style="font-size: 14px">Ειδοποίηση</label>
+<select id="remind" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24">
+<option>7 ημέρες πριν</option>
+<option>3 ημέρες πριν</option>
+<option>1 ημέρα πριν</option>
+<option>Χωρίς υπενθύμιση</option>
+</select>
+<label style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 14px"><input type="checkbox" checked style="width: 18px; height: 18px">Email</label>
+<label style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 14px"><input type="checkbox" checked style="width: 18px; height: 18px">Pushover</label>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="notes" style="font-size: 13px; font-weight: 600">Σημειώσεις (προαιρετικά)</label>
+<textarea id="notes" rows="3" style="padding: 12px 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 15px; color: #1d1d24; resize: vertical"></textarea>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; padding-top: 6px">
+<a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 22px; border-radius: 999px; background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.85); font-size: 14px; font-weight: 600; box-shadow: inset 0 1px 0 #ffffff">Ακύρωση</a>
+<a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 24px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.6); background: rgba(10,91,196,0.92); color: #ffffff; font-size: 14px; font-weight: 600; box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), 0 6px 18px rgba(10,91,196,0.35)">Αποθήκευση</a>
+</div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1100}}'>
+class Component extends DCLogic {
+renderVals() {
+const type = (this.state && this.state.type) || 'fixed';
+const method = (this.state && this.state.method) || 'card';
+const freq = (this.state && this.state.freq) || 'Μηνιαία';
+const start = (this.state && this.state.start) || '';
+const manual = !!(this.state && this.state.manual);
+const months = { 'Μηνιαία': 1, 'Τριμηνιαία': 3, 'Εξαμηνιαία': 6, 'Ετήσια': 12 };
+let nextText = 'δεν έχει οριστεί';
+if (start) {
+const p = start.split('-');
+const y = parseInt(p[0], 10);
+const m = parseInt(p[1], 10) - 1;
+const d = parseInt(p[2], 10);
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+let res = new Date(y, m, d);
+if (freq === 'Εβδομαδιαία') {
+while (res < today) { res = new Date(res.getFullYear(), res.getMonth(), res.getDate() + 7); }
+} else {
+const step = months[freq] || 1;
+const at = (n) => {
+const t = new Date(y, m + n, 1);
+const last = new Date(t.getFullYear(), t.getMonth() + 1, 0).getDate();
+return new Date(t.getFullYear(), t.getMonth(), Math.min(d, last));
+};
+let k = 0;
+while (at(k) < today && k < 2400) { k += step; }
+res = at(k);
+}
+nextText = res.toLocaleDateString('el-GR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+const on = 'min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.95); color: #1d1d24; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: inset 0 1px 0 #ffffff, 0 2px 8px rgba(60,70,160,0.12)';
+const off = 'min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid transparent; background: transparent; color: #3f4358; font-size: 14px; cursor: pointer';
+return {
+isFixed: type === 'fixed',
+isVariable: type === 'variable',
+isCard: method === 'card',
+fixedStyle: type === 'fixed' ? on : off,
+variableStyle: type === 'variable' ? on : off,
+pickFixed: () => this.setState({ type: 'fixed' }),
+pickVariable: () => this.setState({ type: 'variable' }),
+onMethod: (e) => this.setState({ method: e.target.value }),
+nextText: nextText,
+isAuto: !manual,
+isManual: manual,
+onFreq: (e) => this.setState({ freq: e.target.value }),
+onStart: (e) => this.setState({ start: e.target.value }),
+toggleManual: () => this.setState({ manual: !manual })
+};
+}
+}
+</script>
+</body>
+</html>

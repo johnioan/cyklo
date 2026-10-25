@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<title>Συνδρομές – λίστα</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button,select,input{font-family:inherit}
+input:focus,select:focus{outline:2px solid #0a5bc4;outline-offset:1px}
+</style>
+</helmet>
+<div style="position: relative; overflow: hidden; min-height: 1000px; box-sizing: border-box; background: #dfe7fb; font-family: -apple-system, 'SF Pro Display', 'Inter', system-ui, sans-serif; color: #1d1d24">
+
+<div style="position: absolute; top: -140px; left: -120px; width: 520px; height: 520px; border-radius: 50%; background: #7aa2ff; filter: blur(70px); opacity: 0.75"></div>
+<div style="position: absolute; top: 120px; right: -160px; width: 560px; height: 560px; border-radius: 50%; background: #c9a6ff; filter: blur(80px); opacity: 0.7"></div>
+<div style="position: absolute; bottom: -180px; left: 22%; width: 600px; height: 600px; border-radius: 50%; background: #7fe3d0; filter: blur(80px); opacity: 0.65"></div>
+<div style="position: absolute; bottom: 60px; right: 8%; width: 320px; height: 320px; border-radius: 50%; background: #ffc2a1; filter: blur(70px); opacity: 0.7"></div>
+
+<div style="position: relative; max-width: 1200px; margin: 0 auto; padding: 28px 32px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+
+<nav style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px 10px 20px; border-radius: 999px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.14)">
+<div style="display: flex; align-items: center; gap: 22px; flex-wrap: wrap">
+<div style="font-size: 17px; font-weight: 600; letter-spacing: -0.2px">Συνδρομές</div>
+<div style="display: flex; gap: 4px; flex-wrap: wrap">
+<a href="Main.dc.html" style="padding: 9px 16px; border-radius: 999px; font-size: 14px; color: #3f4358">Αρχική</a>
+<a href="Subscriptions.dc.html" style="padding: 9px 16px; border-radius: 999px; background: rgba(255,255,255,0.8); box-shadow: inset 0 1px 0 #ffffff, 0 2px 8px rgba(60,70,160,0.12); font-size: 14px; font-weight: 600">Συνδρομές</a>
+<a href="Reports.dc.html" style="padding: 9px 16px; border-radius: 999px; font-size: 14px; color: #3f4358">Αναφορές</a>
+<a href="Calendar.dc.html" style="padding: 9px 16px; border-radius: 999px; font-size: 14px; color: #3f4358">Ημερολόγιο</a>
+<a href="Settings.dc.html" style="padding: 9px 16px; border-radius: 999px; font-size: 14px; color: #3f4358">Ρυθμίσεις</a>
+</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px">
+<div style="display: flex; padding: 3px; border-radius: 999px; background: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.7); font-size: 12px; font-weight: 600">
+<span style="padding: 6px 11px; border-radius: 999px; background: rgba(255,255,255,0.9)">EL</span>
+<span style="padding: 6px 11px; color: #3f4358">EN</span>
+</div>
+<a href="NewSubscription.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.6); background: rgba(10,91,196,0.92); color: #ffffff; font-size: 14px; font-weight: 600; box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), 0 6px 18px rgba(10,91,196,0.35)">+ Νέα συνδρομή</a>
+</div>
+</nav>
+
+<h1 style="margin: 0; font-size: 30px; font-weight: 600; letter-spacing: -0.6px">Συνδρομές</h1>
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<div style="display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 999px; background: rgba(255,255,255,0.45); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95)">
+<button onClick="{{ pickAll }}" style="{{ tabAllStyle }}">{{ tabAllLabel }}</button>
+<button onClick="{{ pickActive }}" style="{{ tabActiveStyle }}">{{ tabActiveLabel }}</button>
+<button onClick="{{ pickPaused }}" style="{{ tabPausedStyle }}">{{ tabPausedLabel }}</button>
+<button onClick="{{ pickCancelled }}" style="{{ tabCancelledStyle }}">{{ tabCancelledLabel }}</button>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<label for="q" style="font-size: 13px; color: #3f4358">Αναζήτηση</label>
+<input id="q" type="search" onInput="{{ onSearch }}" placeholder="Εταιρεία ή υπηρεσία" style="min-height: 44px; width: 200px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 14px; color: #1d1d24">
+<label for="cat" style="font-size: 13px; color: #3f4358">Κατηγορία</label>
+<select id="cat" onChange="{{ onCategory }}" style="min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.65); font-size: 14px; color: #1d1d24">
+<option value="">Όλες</option>
+<option>Gaming</option>
+<option>Παραγωγικότητα</option>
+<option>Streaming</option>
+<option>Ενέργεια και λογαριασμοί</option>
+<option>Τηλεπικοινωνίες</option>
+</select>
+</div>
+</div>
+
+<div style="padding: 14px 16px; border-radius: 28px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.12)">
+
+<sc-for list="{{ rows }}" as="row" hint-placeholder-count="4">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; margin: 4px 0; border-radius: 18px; background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.7)">
+<div style="display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1 1 280px">
+<div aria-hidden="true" style="{{ row.iconStyle }}"></div>
+<div style="min-width: 0">
+<div style="font-size: 15px; font-weight: 600">{{ row.title }}</div>
+<div style="font-size: 12px; color: #4b4f63">{{ row.meta }}</div>
+</div>
+</div>
+<div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap">
+<span style="{{ row.statusStyle }}">{{ row.statusLabel }}</span>
+<div style="text-align: right; min-width: 120px">
+<div style="font-size: 15px; font-weight: 600">{{ row.amount }}</div>
+<div style="font-size: 12px; color: #4b4f63">{{ row.next }}</div>
+</div>
+<a href="NewSubscription.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 999px; background: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.85); font-size: 13px; font-weight: 600; color: #0a5bc4">Επεξεργασία</a>
+</div>
+</div>
+</sc-for>
+
+<sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+<div style="padding: 36px 16px; text-align: center">
+<div style="font-size: 17px; font-weight: 600">Δεν βρέθηκαν συνδρομές</div>
+<div style="margin-top: 4px; font-size: 14px; color: #4b4f63">Προσαρμογή του φίλτρου ή της αναζήτησης.</div>
+</div>
+</sc-if>
+
+</div>
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+<div style="font-size: 13px; color: #3f4358">{{ countText }}</div>
+<div style="display: flex; gap: 10px">
+<button style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.7); font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: inset 0 1px 0 #ffffff">Εξαγωγή Excel</button>
+<button style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.7); font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: inset 0 1px 0 #ffffff">Εξαγωγή CSV</button>
+</div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1000}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = (this.state && this.state.status) || 'all';
+const q = ((this.state && this.state.q) || '').toLowerCase();
+const cat = (this.state && this.state.cat) || '';
+const chip = (bg, fg) => 'display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: ' + bg + '; color: ' + fg;
+const icon = (c) => 'flex: none; width: 40px; height: 40px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.8); background: ' + c;
+const data = [
+{ title: 'Εταιρεία Α · Υπηρεσία 1', cat: 'Streaming', meta: 'Streaming · Μηνιαία · Πιστωτική κάρτα «Κύρια κάρτα»', status: 'active', amount: '€ 00,00', next: 'Επόμενη: 26 Οκτ', color: 'rgba(125,107,214,0.3)' },
+{ title: 'Εταιρεία Β · Υπηρεσία 2', cat: 'Παραγωγικότητα', meta: 'Παραγωγικότητα · Ετήσια · PayPal', status: 'active', amount: '€ 00,00', next: 'Επόμενη: 30 Οκτ', color: 'rgba(31,158,143,0.3)' },
+{ title: 'Ρεύμα', cat: 'Ενέργεια και λογαριασμοί', meta: 'Ενέργεια και λογαριασμοί · Μηνιαία · Apple Pay', status: 'active', amount: 'Αναμονή λογαριασμού', next: 'Αναμένεται: 02 Νοε', color: 'rgba(224,114,63,0.3)' },
+{ title: 'Νερό', cat: 'Ενέργεια και λογαριασμοί', meta: 'Ενέργεια και λογαριασμοί · Τριμηνιαία · Πιστωτική κάρτα «Κύρια κάρτα»', status: 'active', amount: 'Λείπει ο λογαριασμός', next: 'Έληξε: 15 Οκτ', color: 'rgba(224,114,63,0.3)' },
+{ title: 'Εταιρεία Γ · Υπηρεσία 3', cat: 'Gaming', meta: 'Gaming · Μηνιαία · Πιστωτική κάρτα «Κάρτα εργασίας»', status: 'paused', amount: '€ 00,00', next: 'Σε παύση', color: 'rgba(77,111,232,0.3)' },
+{ title: 'Εταιρεία Δ · Υπηρεσία 4', cat: 'Streaming', meta: 'Streaming · Μηνιαία · PayPal', status: 'cancelled', amount: '€ 00,00', next: 'Ακυρώθηκε', color: 'rgba(154,154,168,0.35)' }
+];
+const count = (s) => data.filter((r) => s === 'all' || r.status === s).length;
+const labels = { active: 'Ενεργή', paused: 'Σε παύση', cancelled: 'Ακυρωμένη' };
+const styles = {
+active: chip('rgba(150,230,190,0.6)', '#0b4a2c'),
+paused: chip('rgba(255,224,150,0.7)', '#5c3b00'),
+cancelled: chip('rgba(220,222,232,0.8)', '#33364a')
+};
+const rows = data.filter((r) => (st === 'all' || r.status === st) && (cat === '' || r.cat === cat) && (q === '' || r.title.toLowerCase().indexOf(q) !== -1)).map((r) => ({
+title: r.title,
+meta: r.meta,
+amount: r.amount,
+next: r.next,
+statusLabel: labels[r.status],
+statusStyle: styles[r.status],
+iconStyle: icon(r.color)
+}));
+const on = 'min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.95); color: #1d1d24; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: inset 0 1px 0 #ffffff, 0 2px 8px rgba(60,70,160,0.12)';
+const off = 'min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid transparent; background: transparent; color: #3f4358; font-size: 14px; cursor: pointer';
+return {
+rows: rows,
+isEmpty: rows.length === 0,
+countText: 'Εμφανίζονται ' + rows.length + ' από ' + data.length + ' συνδρομές',
+tabAllLabel: 'Όλες (' + count('all') + ')',
+tabActiveLabel: 'Ενεργές (' + count('active') + ')',
+tabPausedLabel: 'Σε παύση (' + count('paused') + ')',
+tabCancelledLabel: 'Ακυρωμένες (' + count('cancelled') + ')',
+tabAllStyle: st === 'all' ? on : off,
+tabActiveStyle: st === 'active' ? on : off,
+tabPausedStyle: st === 'paused' ? on : off,
+tabCancelledStyle: st === 'cancelled' ? on : off,
+pickAll: () => this.setState({ status: 'all' }),
+pickActive: () => this.setState({ status: 'active' }),
+pickPaused: () => this.setState({ status: 'paused' }),
+pickCancelled: () => this.setState({ status: 'cancelled' }),
+onSearch: (e) => this.setState({ q: e.target.value }),
+onCategory: (e) => this.setState({ cat: e.target.value })
+};
+}
+}
+</script>
+</body>
+</html>

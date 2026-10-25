@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<title>Ημερολόγιο – Συνδρομές</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button,select{font-family:inherit}
+button:focus-visible{outline:2px solid #0a5bc4;outline-offset:2px}
+</style>
+</helmet>
+<div style="position: relative; overflow: hidden; min-height: 1000px; box-sizing: border-box; background: #dfe7fb; font-family: -apple-system, 'SF Pro Display', 'Inter', system-ui, sans-serif; color: #1d1d24">
+
+<div style="position: absolute; top: -140px; left: -120px; width: 520px; height: 520px; border-radius: 50%; background: #7aa2ff; filter: blur(70px); opacity: 0.75"></div>
+<div style="position: absolute; top: 120px; right: -160px; width: 560px; height: 560px; border-radius: 50%; background: #c9a6ff; filter: blur(80px); opacity: 0.7"></div>
+<div style="position: absolute; bottom: -180px; left: 22%; width: 600px; height: 600px; border-radius: 50%; background: #7fe3d0; filter: blur(80px); opacity: 0.65"></div>
+<div style="position: absolute; bottom: 60px; right: 8%; width: 320px; height: 320px; border-radius: 50%; background: #ffc2a1; filter: blur(70px); opacity: 0.7"></div>
+
+<div style="position: relative; max-width: 1200px; margin: 0 auto; padding: 28px 32px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+
+<nav style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px 10px 20px; border-radius: 999px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.14)">
+<div style="display: flex; align-items: center; gap: 22px; flex-wrap: wrap">
+<div style="font-size: 17px; font-weight: 600; letter-spacing: -0.2px">Συνδρομές</div>
+<div style="display: flex; gap: 4px; flex-wrap: wrap">
+<a href="Main.dc.html" style="padding: 9px 16px; border-radius: 999px; font-size: 14px; color: #3f4358">Αρχική</a>
+<a href="Subscriptions.dc.html" style="padding: 9px 16px; border-radius: 999px; font-size: 14px; color: #3f4358">Συνδρομές</a>
+<a href="Reports.dc.html" style="padding: 9px 16px; border-radius: 999px; font-size: 14px; color: #3f4358">Αναφορές</a>
+<a href="Calendar.dc.html" style="padding: 9px 16px; border-radius: 999px; background: rgba(255,255,255,0.8); box-shadow: inset 0 1px 0 #ffffff, 0 2px 8px rgba(60,70,160,0.12); font-size: 14px; font-weight: 600">Ημερολόγιο</a>
+<a href="Settings.dc.html" style="padding: 9px 16px; border-radius: 999px; font-size: 14px; color: #3f4358">Ρυθμίσεις</a>
+</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px">
+<div style="display: flex; padding: 3px; border-radius: 999px; background: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.7); font-size: 12px; font-weight: 600">
+<span style="padding: 6px 11px; border-radius: 999px; background: rgba(255,255,255,0.9)">EL</span>
+<span style="padding: 6px 11px; color: #3f4358">EN</span>
+</div>
+<a href="NewSubscription.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.6); background: rgba(10,91,196,0.92); color: #ffffff; font-size: 14px; font-weight: 600; box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), 0 6px 18px rgba(10,91,196,0.35)">+ Νέα συνδρομή</a>
+</div>
+</nav>
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<h1 style="margin: 0; font-size: 30px; font-weight: 600; letter-spacing: -0.6px">Ημερολόγιο</h1>
+<div style="display: flex; align-items: center; gap: 10px">
+<button onClick="{{ goPrev }}" aria-label="Προηγούμενος μήνας" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.8); background: rgba(255,255,255,0.7); font-size: 14px; font-weight: 600; cursor: pointer; color: #1d1d24; box-shadow: inset 0 1px 0 #ffffff; width: 44px; padding: 0">‹</button>
+<div style="min-width: 150px; text-align: center; font-size: 16px; font-weight: 600">{{ monthTitle }}</div>
+<button onClick="{{ goNext }}" aria-label="Επόμενος μήνας" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.8); background: rgba(255,255,255,0.7); font-size: 14px; font-weight: 600; cursor: pointer; color: #1d1d24; box-shadow: inset 0 1px 0 #ffffff; width: 44px; padding: 0">›</button>
+<button onClick="{{ goToday }}" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.8); background: rgba(255,255,255,0.7); font-size: 14px; font-weight: 600; cursor: pointer; color: #1d1d24; box-shadow: inset 0 1px 0 #ffffff">Σήμερα</button>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+
+<div style="flex: 2.2 1 640px; min-width: 0; padding: 18px 20px 20px; border-radius: 28px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.12)">
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px">
+<div style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600; color: #4b4f63">Δευ</div><div style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600; color: #4b4f63">Τρί</div><div style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600; color: #4b4f63">Τετ</div><div style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600; color: #4b4f63">Πέμ</div><div style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600; color: #4b4f63">Παρ</div><div style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600; color: #4b4f63">Σάβ</div><div style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600; color: #4b4f63">Κυρ</div>
+<sc-for list="{{ cells }}" as="c" hint-placeholder-count="7">
+<button onClick="{{ c.pick }}" aria-label="{{ c.label }}" style="{{ c.cellStyle }}">
+<span style="{{ c.numStyle }}">{{ c.num }}</span>
+<sc-if value="{{ c.has1 }}" hint-placeholder-val="{{ false }}"><span style="{{ c.chip1Style }}">{{ c.chip1 }}</span></sc-if>
+<sc-if value="{{ c.has2 }}" hint-placeholder-val="{{ false }}"><span style="{{ c.chip2Style }}">{{ c.chip2 }}</span></sc-if>
+<sc-if value="{{ c.hasMore }}" hint-placeholder-val="{{ false }}"><span style="display: block; font-size: 11px; color: #4b4f63; padding-left: 4px">{{ c.more }}</span></sc-if>
+</button>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 18px; margin-top: 14px; font-size: 12px; color: #4b4f63">
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 18px; height: 12px; border-radius: 6px; background: rgba(255,255,255,0.9); border-left: 4px solid #4d6fe8"></span>Σταθερό ποσό</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 18px; height: 12px; border-radius: 6px; background: rgba(255,255,255,0.5); border: 1px dashed #4b4f63"></span>Λογαριασμός σε αναμονή</span>
+</div>
+</div>
+
+<div style="flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+
+<div style="padding: 22px 24px; border-radius: 28px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.12)">
+<div style="font-size: 13px; color: #3f4358">Σύνολο μήνα</div>
+<div style="margin-top: 6px; font-size: 34px; font-weight: 600; letter-spacing: -0.8px">€ 000,00</div>
+<div style="margin-top: 10px; font-size: 12px; color: #4b4f63">Δεν περιλαμβάνονται οι λογαριασμοί σε αναμονή.</div>
+</div>
+
+<div style="padding: 22px 24px; border-radius: 28px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.12)">
+<div style="font-size: 13px; color: #3f4358">Επιλεγμένη ημέρα</div>
+<div style="margin: 4px 0 14px; font-size: 18px; font-weight: 600; letter-spacing: -0.3px">{{ selTitle }}</div>
+<sc-for list="{{ selEvents }}" as="e" hint-placeholder-count="2">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 12px; margin-bottom: 8px; border-radius: 14px; background: rgba(255,255,255,0.6); border-left: 4px solid {{ e.color }}; font-size: 14px">
+<span style="min-width: 0"><span style="display: block; font-weight: 600">{{ e.name }}</span><span style="display: block; font-size: 12px; color: #4b4f63">{{ e.sub }}</span></span>
+<span style="font-weight: 600; flex: none">{{ e.amount }}</span>
+</div>
+</sc-for>
+<sc-if value="{{ selEmpty }}" hint-placeholder-val="{{ false }}">
+<div style="font-size: 13px; color: #4b4f63">Δεν υπάρχουν πληρωμές αυτή την ημέρα.</div>
+</sc-if>
+</div>
+
+</div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1000}}'>
+class Component extends DCLogic {
+renderVals() {
+const off = (this.state && this.state.off) || 0;
+const now = new Date();
+const first = new Date(now.getFullYear(), now.getMonth() + off, 1);
+const y = first.getFullYear();
+const m = first.getMonth();
+const key = (d) => d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate();
+const todayKey = key(now);
+let sel = this.state && this.state.sel;
+if (!sel) { sel = off === 0 ? todayKey : key(first); }
+const lead = (first.getDay() + 6) % 7;
+const sample = {
+5: [{ n: 'Υπηρεσία Α', c: '#4d6fe8', v: false }],
+12: [{ n: 'Υπηρεσία Β', c: '#7d6bd6', v: false }, { n: 'Υπηρεσία Γ', c: '#1f9e8f', v: false }],
+18: [{ n: 'Ρεύμα', c: '#e0723f', v: true }],
+25: [{ n: 'Υπηρεσία Δ', c: '#4d6fe8', v: false }, { n: 'Νερό', c: '#1f9e8f', v: true }, { n: 'Υπηρεσία Ε', c: '#7d6bd6', v: false }]
+};
+const chipStyle = (e) => 'display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding: 3px 7px; border-radius: 8px; font-size: 11.5px; color: #1d1d24; ' + (e.v ? 'background: rgba(255,255,255,0.45); border: 1px dashed #4b4f63' : 'background: rgba(255,255,255,0.9); border-left: 4px solid ' + e.c);
+const cells = [];
+let selEvents = [];
+let selTitle = '';
+for (let i = 0; i < 42; i++) {
+const d = new Date(y, m, 1 - lead + i);
+const inMonth = d.getMonth() === m;
+const k = key(d);
+const ev = inMonth ? (sample[d.getDate()] || []) : [];
+const isToday = k === todayKey;
+const isSel = k === sel;
+const label = d.toLocaleDateString('el-GR', { day: 'numeric', month: 'long', year: 'numeric' }) + (ev.length ? ', ' + ev.length + ' πληρωμές' : '');
+if (isSel) {
+selTitle = d.toLocaleDateString('el-GR', { weekday: 'long', day: 'numeric', month: 'long' });
+selEvents = ev.map((e) => ({ name: e.n, color: e.c, sub: e.v ? 'Αναμονή λογαριασμού' : 'Σταθερό ποσό', amount: e.v ? '—' : '€ 00,00' }));
+}
+cells.push({
+num: String(d.getDate()),
+label: label,
+pick: () => this.setState({ sel: k }),
+cellStyle: 'display: flex; flex-direction: column; gap: 4px; min-height: 100px; box-sizing: border-box; padding: 8px 6px; text-align: left; font-family: inherit; cursor: pointer; border-radius: 16px; color: #1d1d24; opacity: ' + (inMonth ? 1 : 0.4) + '; background: ' + (isSel ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.5)') + '; border: ' + (isSel ? '2px solid #0a5bc4' : '1px solid rgba(255,255,255,0.7)'),
+numStyle: isToday ? 'display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: rgba(10,91,196,0.92); color: #ffffff; font-size: 13px; font-weight: 600' : 'display: inline-flex; align-items: center; height: 26px; padding-left: 4px; font-size: 13px; font-weight: 500',
+has1: ev.length > 0, chip1: ev[0] ? ev[0].n : '', chip1Style: ev[0] ? chipStyle(ev[0]) : '',
+has2: ev.length > 1, chip2: ev[1] ? ev[1].n : '', chip2Style: ev[1] ? chipStyle(ev[1]) : '',
+hasMore: ev.length > 2, more: '+' + (ev.length - 2) + ' ακόμη'
+});
+}
+return {
+monthTitle: first.toLocaleDateString('el-GR', { month: 'long', year: 'numeric' }),
+cells: cells,
+selTitle: selTitle,
+selEvents: selEvents,
+selEmpty: selEvents.length === 0,
+goPrev: () => this.setState({ off: off - 1, sel: '' }),
+goNext: () => this.setState({ off: off + 1, sel: '' }),
+goToday: () => this.setState({ off: 0, sel: '' })
+};
+}
+}
+</script>
+</body>
+</html>

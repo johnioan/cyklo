@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<title>Αρχική ρύθμιση</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button,select,input{font-family:inherit}
+input:focus,select:focus,button:focus-visible{outline:2px solid #0a5bc4;outline-offset:1px}
+</style>
+</helmet>
+<div style="position: relative; overflow: hidden; min-height: 860px; box-sizing: border-box; background: #dfe7fb; font-family: -apple-system, 'SF Pro Display', 'Inter', system-ui, sans-serif; color: #1d1d24; display: flex; align-items: center; justify-content: center; padding: 32px 20px">
+
+<div style="position: absolute; top: -140px; left: -120px; width: 520px; height: 520px; border-radius: 50%; background: #7aa2ff; filter: blur(70px); opacity: 0.75"></div>
+<div style="position: absolute; top: 160px; right: -160px; width: 560px; height: 560px; border-radius: 50%; background: #c9a6ff; filter: blur(80px); opacity: 0.7"></div>
+<div style="position: absolute; bottom: -180px; left: 22%; width: 600px; height: 600px; border-radius: 50%; background: #7fe3d0; filter: blur(80px); opacity: 0.65"></div>
+<div style="position: absolute; bottom: 60px; right: 8%; width: 320px; height: 320px; border-radius: 50%; background: #ffc2a1; filter: blur(70px); opacity: 0.7"></div>
+
+<div style="position: relative; width: 100%; max-width: 560px; box-sizing: border-box; padding: 30px 32px; border-radius: 32px; background: rgba(255,255,255,0.5); backdrop-filter: blur(30px) saturate(180%); -webkit-backdrop-filter: blur(30px) saturate(180%); border: 1px solid rgba(255,255,255,0.8); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 16px 48px rgba(60,70,160,0.18); display: flex; flex-direction: column; gap: 22px">
+
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; color: #3f4358">Συνδρομές</div>
+<h1 style="margin: 0; font-size: 26px; font-weight: 600; letter-spacing: -0.5px">Αρχική ρύθμιση</h1>
+</div>
+
+<sc-if value="{{ showSteps }}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+<sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+<div style="display: inline-flex; align-items: center; gap: 8px">
+<span style="{{ s.circleStyle }}">{{ s.n }}</span>
+<span style="{{ s.labelStyle }}">{{ s.label }}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div>
+<div style="font-size: 18px; font-weight: 600">Επιλογή γλώσσας</div>
+<div style="font-size: 13px; color: #4b4f63; margin-top: 4px">Η γλώσσα μπορεί να αλλάξει αργότερα από τις Ρυθμίσεις.</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<button onClick="{{ pickEl }}" style="{{ elStyle }}">Ελληνικά</button>
+<button onClick="{{ pickEn }}" style="{{ enStyle }}">English</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div>
+<div style="font-size: 18px; font-weight: 600">Επιλογή νομίσματος</div>
+<div style="font-size: 13px; color: #4b4f63; margin-top: 4px">Το νόμισμα εμφανίζεται σε όλα τα ποσά της εφαρμογής.</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="cur" style="font-size: 13px; font-weight: 600">Νόμισμα</label>
+<select id="cur" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.7); font-size: 15px; color: #1d1d24">
+<option>Ευρώ (€)</option>
+<option>Δολάριο ΗΠΑ ($)</option>
+<option>Λίρα Αγγλίας (£)</option>
+<option>Ελβετικό φράγκο (CHF)</option>
+</select>
+<div style="font-size: 12px; color: #4b4f63">Αλλάζει μόνο το σύμβολο. Τα ποσά δεν μετατρέπονται.</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div>
+<div style="font-size: 18px; font-weight: 600">Ειδοποιήσεις <span style="font-size: 13px; font-weight: 400; color: #4b4f63">(προαιρετικό)</span></div>
+<div style="font-size: 13px; color: #4b4f63; margin-top: 4px">Οι ειδοποιήσεις μπορούν να ρυθμιστούν και αργότερα από τις Ρυθμίσεις.</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="days" style="font-size: 13px; font-weight: 600">Υπενθύμιση πριν από την πληρωμή</label>
+<select id="days" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.7); font-size: 15px; color: #1d1d24">
+<option>7 ημέρες πριν</option>
+<option>3 ημέρες πριν</option>
+<option>1 ημέρα πριν</option>
+</select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="mail" style="font-size: 13px; font-weight: 600">Διεύθυνση email</label>
+<input id="mail" type="email" placeholder="name@company.com" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.7); font-size: 15px; color: #1d1d24">
+</div>
+<label style="display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 14px"><input type="checkbox" style="width: 18px; height: 18px">Ειδοποιήσεις μέσω Pushover (ρύθμιση στο επόμενο βήμα από τις Ρυθμίσεις)</label>
+</div>
+</sc-if>
+
+<sc-if value="{{ isStep4 }}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div>
+<div style="font-size: 18px; font-weight: 600">Η αρχική ρύθμιση ολοκληρώθηκε</div>
+<div style="font-size: 13px; color: #4b4f63; margin-top: 4px">Η εφαρμογή είναι έτοιμη για καταχώρηση συνδρομών.</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<a href="NewSubscription.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 22px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.6); background: rgba(10,91,196,0.92); color: #ffffff; font-size: 14px; font-weight: 600; box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), 0 6px 18px rgba(10,91,196,0.35)">Προσθήκη πρώτης συνδρομής</a>
+<a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 22px; border-radius: 999px; background: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.85); font-size: 14px; font-weight: 600; box-shadow: inset 0 1px 0 #ffffff">Μετάβαση στην αρχική</a>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ showControls }}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding-top: 4px">
+<div>
+<sc-if value="{{ showBack }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ goBack }}" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.6); font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: inset 0 1px 0 #ffffff">Πίσω</button>
+</sc-if>
+</div>
+<div style="display: flex; gap: 10px">
+<sc-if value="{{ showSkip }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ goNext }}" style="min-height: 44px; padding: 0 18px; border: 0; background: transparent; font-size: 14px; font-weight: 600; color: #0a5bc4; cursor: pointer">Παράλειψη</button>
+</sc-if>
+<button onClick="{{ goNext }}" style="min-height: 44px; padding: 0 24px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.6); background: rgba(10,91,196,0.92); color: #ffffff; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), 0 6px 18px rgba(10,91,196,0.35)">{{ nextLabel }}</button>
+</div>
+</div>
+</sc-if>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":860}}'>
+class Component extends DCLogic {
+renderVals() {
+const step = (this.state && this.state.step) || 1;
+const lang = (this.state && this.state.lang) || 'el';
+const names = ['Γλώσσα', 'Νόμισμα', 'Ειδοποιήσεις'];
+const steps = names.map((label, i) => {
+const n = i + 1;
+const done = step > n;
+const cur = step === n;
+const bg = done ? 'rgba(10,91,196,0.92)' : (cur ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.5)');
+const fg = done ? '#ffffff' : '#1d1d24';
+const bd = cur ? '2px solid #0a5bc4' : '1px solid rgba(255,255,255,0.85)';
+return {
+n: done ? '✓' : String(n),
+label: label,
+circleStyle: 'display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; font-size: 13px; font-weight: 600; box-sizing: border-box; background: ' + bg + '; color: ' + fg + '; border: ' + bd,
+labelStyle: 'font-size: 13px; font-weight: ' + (cur ? '600' : '400') + '; color: ' + (cur ? '#1d1d24' : '#4b4f63')
+};
+});
+const on = 'min-height: 64px; border-radius: 20px; border: 2px solid #0a5bc4; background: rgba(255,255,255,0.95); color: #1d1d24; font-size: 17px; font-weight: 600; cursor: pointer; box-shadow: inset 0 1px 0 #ffffff, 0 4px 14px rgba(60,70,160,0.14)';
+const off = 'min-height: 64px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.55); color: #1d1d24; font-size: 17px; font-weight: 500; cursor: pointer';
+return {
+steps: steps,
+showSteps: step < 4,
+isStep1: step === 1,
+isStep2: step === 2,
+isStep3: step === 3,
+isStep4: step === 4,
+showControls: step < 4,
+showBack: step > 1,
+showSkip: step === 3,
+nextLabel: step === 3 ? 'Ολοκλήρωση' : 'Συνέχεια',
+elStyle: lang === 'el' ? on : off,
+enStyle: lang === 'en' ? on : off,
+pickEl: () => this.setState({ lang: 'el' }),
+pickEn: () => this.setState({ lang: 'en' }),
+goNext: () => this.setState({ step: Math.min(step + 1, 4) }),
+goBack: () => this.setState({ step: Math.max(step - 1, 1) })
+};
+}
+}
+</script>
+</body>
+</html>

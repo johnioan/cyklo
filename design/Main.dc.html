@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<title>Αρχική – Συνδρομές</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="position: relative; overflow: hidden; min-height: 1000px; box-sizing: border-box; background: #dfe7fb; font-family: -apple-system, 'SF Pro Display', 'Inter', system-ui, sans-serif; color: #1d1d24">
+
+<div style="position: absolute; top: -140px; left: -120px; width: 520px; height: 520px; border-radius: 50%; background: #7aa2ff; filter: blur(70px); opacity: 0.75"></div>
+<div style="position: absolute; top: 120px; right: -160px; width: 560px; height: 560px; border-radius: 50%; background: #c9a6ff; filter: blur(80px); opacity: 0.7"></div>
+<div style="position: absolute; bottom: -180px; left: 22%; width: 600px; height: 600px; border-radius: 50%; background: #7fe3d0; filter: blur(80px); opacity: 0.65"></div>
+<div style="position: absolute; bottom: 60px; right: 8%; width: 320px; height: 320px; border-radius: 50%; background: #ffc2a1; filter: blur(70px); opacity: 0.7"></div>
+
+<div style="position: relative; max-width: 1200px; margin: 0 auto; padding: 28px 32px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+
+<nav style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px 10px 20px; border-radius: 999px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.14)">
+<div style="display: flex; align-items: center; gap: 22px; flex-wrap: wrap">
+<div style="font-size: 17px; font-weight: 600; letter-spacing: -0.2px">Συνδρομές</div>
+<div style="display: flex; gap: 4px; flex-wrap: wrap">
+<a href="Main.dc.html" style="padding: 9px 16px; border-radius: 999px; background: rgba(255,255,255,0.8); box-shadow: inset 0 1px 0 #ffffff, 0 2px 8px rgba(60,70,160,0.12); font-size: 14px; font-weight: 600">Αρχική</a>
+<a href="Subscriptions.dc.html" style="padding: 9px 16px; border-radius: 999px; font-size: 14px; color: #3f4358">Συνδρομές</a>
+<a href="Reports.dc.html" style="padding: 9px 16px; border-radius: 999px; font-size: 14px; color: #3f4358">Αναφορές</a>
+<a href="Calendar.dc.html" style="padding: 9px 16px; border-radius: 999px; font-size: 14px; color: #3f4358">Ημερολόγιο</a>
+<a href="Settings.dc.html" style="padding: 9px 16px; border-radius: 999px; font-size: 14px; color: #3f4358">Ρυθμίσεις</a>
+</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px">
+<div style="display: flex; padding: 3px; border-radius: 999px; background: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.7); font-size: 12px; font-weight: 600">
+<span style="padding: 6px 11px; border-radius: 999px; background: rgba(255,255,255,0.9)">EL</span>
+<span style="padding: 6px 11px; color: #3f4358">EN</span>
+</div>
+<a href="NewSubscription.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.6); background: rgba(10,91,196,0.92); color: #ffffff; font-size: 14px; font-weight: 600; box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), 0 6px 18px rgba(10,91,196,0.35)">+ Νέα συνδρομή</a>
+</div>
+</nav>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
+<div style="padding: 20px 22px; border-radius: 28px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.12)">
+<div style="font-size: 13px; color: #3f4358">Μηνιαία έξοδα</div>
+<div style="margin-top: 6px; font-size: 34px; font-weight: 600; letter-spacing: -0.8px">€ 000,00</div>
+<div style="margin-top: 4px; font-size: 12px; color: #4b4f63">Σταθερές συνδρομές και καταχωρημένοι λογαριασμοί</div>
+</div>
+<div style="padding: 20px 22px; border-radius: 28px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.12)">
+<div style="font-size: 13px; color: #3f4358">Ετήσια έξοδα</div>
+<div style="margin-top: 6px; font-size: 34px; font-weight: 600; letter-spacing: -0.8px">€ 0.000,00</div>
+<div style="margin-top: 4px; font-size: 12px; color: #4b4f63">Προβολή για τους επόμενους 12 μήνες</div>
+</div>
+<div style="padding: 20px 22px; border-radius: 28px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.12)">
+<div style="font-size: 13px; color: #3f4358">Ενεργές συνδρομές</div>
+<div style="margin-top: 6px; font-size: 34px; font-weight: 600; letter-spacing: -0.8px">00</div>
+<div style="margin-top: 4px; font-size: 12px; color: #4b4f63">Εκτός από όσες είναι σε παύση</div>
+</div>
+<div style="padding: 20px 22px; border-radius: 28px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.12)">
+<div style="font-size: 13px; color: #3f4358">Επόμενη πληρωμή</div>
+<div style="margin-top: 6px; font-size: 34px; font-weight: 600; letter-spacing: -0.8px">σε 0 ημέρες</div>
+<div style="margin-top: 4px; font-size: 12px; color: #4b4f63">Εταιρεία Α · Υπηρεσία</div>
+</div>
+</div>
+
+<div style="display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 20px; background: rgba(255,224,150,0.5); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border: 1px solid rgba(255,255,255,0.7); box-shadow: inset 0 1px 0 rgba(255,255,255,0.9); font-size: 14px; color: #5c3b00">
+<span aria-hidden="true" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #c47a00"></span>
+Δεν περιλαμβάνονται 3 λογαριασμοί που αναμένεται να καταχωρηθούν (π.χ. ρεύμα, νερό).
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch">
+
+<div style="flex: 1.4 1 480px; min-width: 0; padding: 22px 24px; border-radius: 28px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.12)">
+<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px">
+<div style="font-size: 18px; font-weight: 600; letter-spacing: -0.3px">Επερχόμενες πληρωμές</div>
+<a href="#" style="font-size: 13px; color: #0a5bc4; font-weight: 600">Όλες</a>
+</div>
+
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; margin-top: 8px; border-radius: 18px; background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.7)">
+<div style="display: flex; align-items: center; gap: 12px; min-width: 0">
+<div aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 12px; background: rgba(91,124,250,0.25); border: 1px solid rgba(255,255,255,0.8)"></div>
+<div style="min-width: 0">
+<div style="font-size: 15px; font-weight: 600">Εταιρεία Α · Υπηρεσία</div>
+<div style="font-size: 12px; color: #4b4f63">Πιστωτική κάρτα · «Η κάρτα μου» · Μηνιαία</div>
+</div>
+</div>
+<div style="text-align: right; flex: none">
+<div style="font-size: 15px; font-weight: 600">€ 00,00</div>
+<div style="font-size: 12px; color: #4b4f63">26 Οκτ</div>
+</div>
+</div>
+
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; margin-top: 8px; border-radius: 18px; background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.7)">
+<div style="display: flex; align-items: center; gap: 12px; min-width: 0">
+<div aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 12px; background: rgba(43,179,163,0.25); border: 1px solid rgba(255,255,255,0.8)"></div>
+<div style="min-width: 0">
+<div style="font-size: 15px; font-weight: 600">Εταιρεία Β · Υπηρεσία</div>
+<div style="font-size: 12px; color: #4b4f63">PayPal · Ετήσια</div>
+</div>
+</div>
+<div style="text-align: right; flex: none">
+<div style="font-size: 15px; font-weight: 600">€ 00,00</div>
+<div style="font-size: 12px; color: #4b4f63">30 Οκτ</div>
+</div>
+</div>
+
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; margin-top: 8px; border-radius: 18px; background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.7)">
+<div style="display: flex; align-items: center; gap: 12px; min-width: 0">
+<div aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 12px; background: rgba(242,140,91,0.28); border: 1px solid rgba(255,255,255,0.8)"></div>
+<div style="min-width: 0">
+<div style="font-size: 15px; font-weight: 600">Ρεύμα</div>
+<div style="font-size: 12px; color: #4b4f63">Μεταβλητό ποσό · Apple Pay</div>
+</div>
+</div>
+<div style="text-align: right; flex: none">
+<div style="display: inline-block; padding: 3px 10px; border-radius: 999px; background: rgba(255,224,150,0.7); color: #5c3b00; font-size: 12px; font-weight: 600">Αναμονή λογαριασμού</div>
+<div style="font-size: 12px; color: #4b4f63; margin-top: 2px">02 Νοε</div>
+</div>
+</div>
+
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; margin-top: 8px; border-radius: 18px; background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.7)">
+<div style="display: flex; align-items: center; gap: 12px; min-width: 0">
+<div aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 12px; background: rgba(154,154,168,0.3); border: 1px solid rgba(255,255,255,0.8)"></div>
+<div style="min-width: 0">
+<div style="font-size: 15px; font-weight: 600">Νερό</div>
+<div style="font-size: 12px; color: #4b4f63">Μεταβλητό ποσό · Πιστωτική κάρτα</div>
+</div>
+</div>
+<div style="text-align: right; flex: none">
+<div style="display: inline-block; padding: 3px 10px; border-radius: 999px; background: rgba(255,170,160,0.6); color: #6e1409; font-size: 12px; font-weight: 600">Λείπει ο λογαριασμός</div>
+<div style="font-size: 12px; color: #4b4f63; margin-top: 2px">Έληξε 15 Οκτ</div>
+</div>
+</div>
+</div>
+
+<div style="flex: 1 1 340px; min-width: 0; padding: 22px 24px; border-radius: 28px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.12)">
+<div style="font-size: 18px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 14px">Έξοδα ανά κατηγορία</div>
+
+<div style="margin-bottom: 14px">
+<div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px"><span>Streaming</span><span style="color: #4b4f63">00%</span></div>
+<div style="height: 10px; border-radius: 999px; background: rgba(255,255,255,0.6)"><div style="width: 38%; height: 10px; border-radius: 999px; background: #4d6fe8"></div></div>
+</div>
+<div style="margin-bottom: 14px">
+<div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px"><span>Λογισμικό</span><span style="color: #4b4f63">00%</span></div>
+<div style="height: 10px; border-radius: 999px; background: rgba(255,255,255,0.6)"><div style="width: 27%; height: 10px; border-radius: 999px; background: #1f9e8f"></div></div>
+</div>
+<div style="margin-bottom: 14px">
+<div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px"><span>Ενέργεια και λογαριασμοί</span><span style="color: #4b4f63">00%</span></div>
+<div style="height: 10px; border-radius: 999px; background: rgba(255,255,255,0.6)"><div style="width: 22%; height: 10px; border-radius: 999px; background: #e0723f"></div></div>
+</div>
+<div>
+<div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px"><span>Τηλεπικοινωνίες</span><span style="color: #4b4f63">00%</span></div>
+<div style="height: 10px; border-radius: 999px; background: rgba(255,255,255,0.6)"><div style="width: 13%; height: 10px; border-radius: 999px; background: #7d6bd6"></div></div>
+</div>
+</div>
+
+</div>
+
+<div style="padding: 22px 24px; border-radius: 28px; background: rgba(255,255,255,0.45); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 30px rgba(60,70,160,0.12)">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<div style="font-size: 18px; font-weight: 600; letter-spacing: -0.3px">Έξοδα ανά μήνα</div>
+<div style="font-size: 12px; color: #4b4f63">Τελευταίοι 12 μήνες</div>
+</div>
+<div style="display: flex; align-items: flex-end; gap: 10px; height: 120px; margin-top: 16px">
+<div style="flex: 1; height: 50%; border-radius: 10px 10px 4px 4px; background: rgba(77,111,232,0.55); border: 1px solid rgba(255,255,255,0.8)"></div>
+<div style="flex: 1; height: 62%; border-radius: 10px 10px 4px 4px; background: rgba(77,111,232,0.55); border: 1px solid rgba(255,255,255,0.8)"></div>
+<div style="flex: 1; height: 55%; border-radius: 10px 10px 4px 4px; background: rgba(77,111,232,0.55); border: 1px solid rgba(255,255,255,0.8)"></div>
+<div style="flex: 1; height: 70%; border-radius: 10px 10px 4px 4px; background: rgba(77,111,232,0.55); border: 1px solid rgba(255,255,255,0.8)"></div>
+<div style="flex: 1; height: 64%; border-radius: 10px 10px 4px 4px; background: rgba(77,111,232,0.55); border: 1px solid rgba(255,255,255,0.8)"></div>
+<div style="flex: 1; height: 58%; border-radius: 10px 10px 4px 4px; background: rgba(77,111,232,0.55); border: 1px solid rgba(255,255,255,0.8)"></div>
+<div style="flex: 1; height: 75%; border-radius: 10px 10px 4px 4px; background: rgba(77,111,232,0.55); border: 1px solid rgba(255,255,255,0.8)"></div>
+<div style="flex: 1; height: 68%; border-radius: 10px 10px 4px 4px; background: rgba(77,111,232,0.55); border: 1px solid rgba(255,255,255,0.8)"></div>
+<div style="flex: 1; height: 80%; border-radius: 10px 10px 4px 4px; background: rgba(77,111,232,0.55); border: 1px solid rgba(255,255,255,0.8)"></div>
+<div style="flex: 1; height: 72%; border-radius: 10px 10px 4px 4px; background: rgba(77,111,232,0.55); border: 1px solid rgba(255,255,255,0.8)"></div>
+<div style="flex: 1; height: 66%; border-radius: 10px 10px 4px 4px; background: rgba(77,111,232,0.55); border: 1px solid rgba(255,255,255,0.8)"></div>
+<div style="flex: 1; height: 90%; border-radius: 10px 10px 4px 4px; background: rgba(10,91,196,0.85); border: 1px solid rgba(255,255,255,0.8)"></div>
+</div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1000}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

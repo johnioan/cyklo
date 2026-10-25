@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<title>Εικονίδιο Cyklo</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; overflow: hidden; min-height: 700px; box-sizing: border-box; background: #dfe7fb; font-family: -apple-system, 'SF Pro Display', 'Inter', system-ui, sans-serif; color: #1d1d24; padding: 48px">
+<svg width="0" height="0" style="position:absolute"><defs><symbol id="cyklo" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f86ff"/>
+      <stop offset="0.55" stop-color="#7a5cf2"/>
+      <stop offset="1" stop-color="#1fb5c9"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#dfe9ff" stop-opacity="0.82"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="dot" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#fff2b8"/>
+      <stop offset="1" stop-color="#ffb43a"/>
+    </radialGradient>
+    <filter id="sh" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="22" stdDeviation="26" flood-color="#1b1f6b" flood-opacity="0.38"/>
+    </filter>
+    <clipPath id="tile"><rect x="0" y="0" width="1024" height="1024" rx="230"/></clipPath>
+  </defs>
+  <rect width="1024" height="1024" rx="230" fill="url(#bg)"/>
+  <g clip-path="url(#tile)">
+    <circle cx="190" cy="120" r="330" fill="#9ec0ff" opacity="0.45"/>
+    <circle cx="880" cy="930" r="360" fill="#5ff0d0" opacity="0.35"/>
+    <ellipse cx="512" cy="-120" rx="760" ry="560" fill="url(#sheen)"/>
+  </g>
+  <circle cx="512" cy="512" r="118" fill="#ffffff" fill-opacity="0.2" stroke="#ffffff" stroke-opacity="0.55" stroke-width="6"/>
+  <g filter="url(#sh)">
+    <circle cx="512" cy="512" r="244" fill="none" stroke="url(#ring)" stroke-width="104" stroke-linecap="round" stroke-dasharray="1150 4000"/>
+    <circle cx="684" cy="340" r="52" fill="url(#dot)"/>
+  </g>
+  <rect x="3" y="3" width="1018" height="1018" rx="227" fill="none" stroke="#ffffff" stroke-opacity="0.4" stroke-width="6"/>
+</symbol></defs></svg>
+<div style="position: absolute; top: -140px; left: -120px; width: 520px; height: 520px; border-radius: 50%; background: #7aa2ff; filter: blur(70px); opacity: 0.75"></div>
+<div style="position: absolute; bottom: -180px; right: 10%; width: 600px; height: 600px; border-radius: 50%; background: #7fe3d0; filter: blur(80px); opacity: 0.65"></div>
+<div style="position: relative; display: flex; flex-direction: column; gap: 28px">
+<div><div style="font-size: 13px; color: #3f4358">Cyklo</div><h1 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.5px">Εικονίδιο εφαρμογής</h1></div>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch">
+<div style="padding: 32px; border-radius: 32px; background: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.8); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 16px 48px rgba(60,70,160,0.18); display: flex; flex-direction: column; align-items: center; gap: 12px"><svg width="320" height="320" viewBox="0 0 1024 1024" aria-label="Εικονίδιο Cyklo"><use href="#cyklo"/></svg><div style="font-size: 13px; color: #4b4f63">PACKAGE_ICON_256.PNG (256 × 256)</div></div>
+<div style="padding: 32px; border-radius: 32px; background: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.8); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 16px 48px rgba(60,70,160,0.18); display: flex; flex-direction: column; gap: 22px; min-width: 360px">
+<div style="font-size: 16px; font-weight: 600">Μεγέθη χρήσης</div>
+<div style="display: flex; align-items: flex-end; gap: 22px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px"><svg width="128" height="128" viewBox="0 0 1024 1024" aria-label="Εικονίδιο Cyklo"><use href="#cyklo"/></svg><span style="font-size: 12px; color: #4b4f63">128</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px"><svg width="64" height="64" viewBox="0 0 1024 1024" aria-label="Εικονίδιο Cyklo"><use href="#cyklo"/></svg><span style="font-size: 12px; color: #4b4f63">64</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px"><svg width="48" height="48" viewBox="0 0 1024 1024" aria-label="Εικονίδιο Cyklo"><use href="#cyklo"/></svg><span style="font-size: 12px; color: #4b4f63">48</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px"><svg width="32" height="32" viewBox="0 0 1024 1024" aria-label="Εικονίδιο Cyklo"><use href="#cyklo"/></svg><span style="font-size: 12px; color: #4b4f63">32</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px"><svg width="24" height="24" viewBox="0 0 1024 1024" aria-label="Εικονίδιο Cyklo"><use href="#cyklo"/></svg><span style="font-size: 12px; color: #4b4f63">24</span></div>
+</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4b4f63; max-width: 340px">Δακτύλιος με κενό: ο κύκλος των επαναλαμβανόμενων πληρωμών. Η χρυσή κουκκίδα σημαίνει την επόμενη πληρωμή.</div>
+</div>
+<div style="padding: 32px; border-radius: 32px; background: #1c1d2b; display: flex; flex-direction: column; align-items: center; gap: 12px; justify-content: center"><svg width="160" height="160" viewBox="0 0 1024 1024" aria-label="Εικονίδιο Cyklo"><use href="#cyklo"/></svg><div style="font-size: 13px; color: #b9bdd4">Σε σκούρο φόντο</div></div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":700}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
