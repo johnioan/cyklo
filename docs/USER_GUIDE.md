@@ -93,7 +93,7 @@ Reminders are sent through [Pushover](https://pushover.net), a third-party servi
 5. Press **Send test notification** to confirm that it reaches the phone.
 6. Set the **Default reminder** (days before payment), the **Send time**, and optionally **Remind when a variable-amount bill is missing**.
 
-The token is stored on the NAS and is not displayed again after saving. Each subscription can override the reminder setting in its own form.
+The token is stored in the app's data file on the NAS and is not displayed again after saving. The data file is not encrypted. Each subscription can override the reminder setting in its own form.
 
 Email reminders are not available in this version.
 
@@ -102,6 +102,8 @@ Email reminders are not available in this version.
 **Settings → Backups**
 - **Download backup** saves all data to a JSON file. Keep copies somewhere other than the NAS volume.
 - **Restore from backup** replaces the current data with the contents of a backup file.
+
+**A backup file contains all data, including the Pushover User Key and API Token, without encryption.** Keep it private and do not share it or post it online.
 
 Make a backup before every update and before uninstalling.
 
