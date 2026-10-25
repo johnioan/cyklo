@@ -14,6 +14,9 @@ Greek and English interface, one user per installation.
 
 Not working yet: email reminders (hidden), DSM login (removed). The app has no login of its own: reach it only from a trusted network (LAN or VPN such as Tailscale).
 
+## Documentation
+[User Guide](docs/USER_GUIDE.md) (English)
+
 ## Install
 1. Download `cyklosub-<version>.spk` from the Releases page.
 2. DSM → Package Center → Manual Install → select the file.
