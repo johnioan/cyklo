@@ -26,9 +26,13 @@ All three can be changed later in **Settings**. The currency applies to the whol
 
 ## 3. Main screens
 
+The screenshots use sample data with fictional companies.
+
 The navigation contains: **Home**, **Subscriptions**, **Reports**, **Calendar**, **Settings**, and a button for a **New subscription**.
 
 ### Home
+
+![Home](screenshots/home.png)
 - **This month**: payments in the current month.
 - **Next 12 months**: known amounts for the next 12 months.
 - **Active subscriptions**: paused ones are excluded.
@@ -37,18 +41,26 @@ The navigation contains: **Home**, **Subscriptions**, **Reports**, **Calendar**,
 - A notice appears when variable-amount subscriptions are waiting for a bill to be entered.
 
 ### Subscriptions
+
+![Subscriptions](screenshots/subscriptions.png)
 A list of all entries with tabs **All / Active / Paused / Cancelled**, a search box (company or service) and a category filter. Each row shows a coloured tile with the first letter of the company, the next payment date and the amount. Select a row to edit it.
 
 ### Reports
+
+![Reports](screenshots/reports.png)
 - **Period**: by month or by year.
 - **Subscriptions** included: active only, active and paused, or all.
 - **View** grouped by payment method, company or category. Select a row to see its details or jump to the matching subscriptions.
 - **Export** the current report to Excel or CSV.
 
 ### Calendar
+
+![Calendar](screenshots/calendar.png)
 A month view of payments. Days with a known amount and days awaiting a bill are marked differently. Select a day to list its payments; the month total is shown below the calendar.
 
 ## 4. Adding a subscription
+
+![New subscription](screenshots/new-subscription.png)
 
 Press **New subscription** and fill in:
 

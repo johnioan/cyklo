@@ -14,6 +14,16 @@ Greek and English interface, one user per installation.
 
 Not working yet: email reminders (hidden), DSM login (removed). The app has no login of its own: reach it only from a trusted network (LAN or VPN such as Tailscale).
 
+## Screenshots
+Sample data only; the companies shown are fictional.
+
+![Home](docs/screenshots/home.png)
+![Subscriptions](docs/screenshots/subscriptions.png)
+![Reports](docs/screenshots/reports.png)
+![Calendar](docs/screenshots/calendar.png)
+![New subscription](docs/screenshots/new-subscription.png)
+![Settings](docs/screenshots/settings.png)
+
 ## Documentation
 [User Guide](docs/USER_GUIDE.md) (English)
 
