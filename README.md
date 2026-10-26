@@ -34,9 +34,13 @@ Sample data only; the companies shown are fictional.
 
 The package declares `arch="x86_64 apollolake"`. Other platforms are untested.
 
+### Container (Docker) edition
+An untested container image for x86_64 hosts is described in [docs/DOCKER.md](docs/DOCKER.md): `docker compose up -d` with the included `docker-compose.yml`.
+
 ## Repository
 - `app/` – Go server and web interface
 - `packaging/` – SPK files; `packaging/build.sh` builds the package
+- `Dockerfile`, `docker-compose.yml`, `.github/workflows/docker.yml` – container edition
 - `design/`, `assets/` – UI prototype boards and app icon
 - `CHANGELOG.md` – release notes (also shown inside the app after an update)
 

@@ -1,0 +1,16 @@
+# Cyklo – container edition. Untested on platforms other than x86_64.
+# No login of its own: publish the port only on a trusted network (LAN / VPN).
+services:
+  cyklo:
+    image: ghcr.io/johnioan/cyklo:latest
+    container_name: cyklo
+    restart: unless-stopped
+    ports:
+      - "8765:8765"
+    environment:
+      TZ: Europe/Athens          # change to your own time zone
+    volumes:
+      - cyklo-data:/data         # holds data.json (all subscriptions and settings)
+
+volumes:
+  cyklo-data:
