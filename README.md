@@ -2,6 +2,7 @@
 
 Subscription and recurring-bill manager for Synology DSM, packaged as an SPK.
 Greek and English interface, one user per installation.
+For those without a Synology NAS, an untested container (Docker) edition is also provided: see [Container (Docker) edition](#container-docker-edition).
 
 **Provided "as is", without warranty of any kind** (see [LICENSE](LICENSE)). It has been tested by its author on a single Synology DS-918+ with DSM 7.4. Make a backup (Settings → Backups) before every update.
 
