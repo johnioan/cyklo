@@ -1,5 +1,5 @@
 # Cyklo container image (linux/amd64 and linux/arm64).
-# Build:  docker build --build-arg VERSION=0.1.8 -t cyklo .
+# Build:  docker build --build-arg VERSION=0.1.7 -t cyklo .
 
 FROM --platform=$BUILDPLATFORM golang:1.24-alpine AS build
 ARG VERSION=dev

@@ -1,9 +1,17 @@
 name: Container image
 
+# Builds the container edition of an existing version of Cyklo.
+# Run manually: GitHub -> Actions -> "Container image" -> Run workflow, and enter the version (for example 0.1.7).
+# It also runs when a tag such as v0.1.8 is pushed.
 on:
   push:
     tags: ["v*"]
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Version number of the image (same as the SPK version, e.g. 0.1.7)"
+        required: true
+        default: "0.1.7"
 
 permissions:
   contents: read
@@ -18,7 +26,7 @@ jobs:
       - name: Version
         id: v
         run: |
-          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then V="${GITHUB_REF_NAME#v}"; else V="dev"; fi
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then V="${GITHUB_REF_NAME#v}"; else V="${{ inputs.version }}"; fi
           echo "version=$V" >> "$GITHUB_OUTPUT"
 
       - uses: docker/setup-qemu-action@v3
@@ -35,11 +43,7 @@ jobs:
         id: t
         run: |
           IMG=ghcr.io/${GITHUB_REPOSITORY,,}
-          if [ "${{ steps.v.outputs.version }}" = "dev" ]; then
-            echo "tags=$IMG:dev" >> "$GITHUB_OUTPUT"
-          else
-            echo "tags=$IMG:${{ steps.v.outputs.version }},$IMG:latest" >> "$GITHUB_OUTPUT"
-          fi
+          echo "tags=$IMG:${{ steps.v.outputs.version }},$IMG:latest" >> "$GITHUB_OUTPUT"
 
       - uses: docker/build-push-action@v6
         with:

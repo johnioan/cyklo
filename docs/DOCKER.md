@@ -15,7 +15,7 @@ The app has no login of its own. Anyone who can reach the published port can rea
 3. Start it: `docker compose up -d`
 4. Open `http://<host address>:8765/`.
 
-Image: `ghcr.io/johnioan/cyklo` (tags: a version such as `0.1.8`, and `latest`). Platforms: `linux/amd64` and `linux/arm64` (32-bit ARM is not supported). Neither has been tested by the author.
+Image: `ghcr.io/johnioan/cyklo` (tags: the version number, for example `0.1.7`, and `latest`). Platforms: `linux/amd64` and `linux/arm64` (32-bit ARM is not supported). Neither has been tested by the author.
 
 ## Settings
 
@@ -45,6 +45,6 @@ Download a backup in the SPK version (Settings → Backups) and restore it in th
 
 ## Maintainer notes
 
-- The image is built by `.github/workflows/docker.yml` when a tag `v<version>` is pushed (for example `v0.1.8`), and published to GitHub Container Registry.
+- The image is built by `.github/workflows/docker.yml` when it is started by hand (GitHub → Actions → "Container image" → Run workflow, entering the version number) or when a tag `v<version>` is pushed. It publishes the image to GitHub Container Registry with the same version number as the SPK.
 - After the first publish, set the package visibility to **Public** (GitHub → the repository's Packages → Cyklo → Package settings), otherwise it cannot be pulled without logging in. The download count is shown on the package page.
-- Local build: `docker build --build-arg VERSION=0.1.8 -t cyklo .`
+- Local build: `docker build --build-arg VERSION=0.1.7 -t cyklo .`
