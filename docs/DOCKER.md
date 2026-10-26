@@ -1,6 +1,6 @@
 # Cyklo – container edition
 
-The same application as the SPK, packaged as a Docker image for anyone who does not have a Synology NAS. It runs on any x86_64 host that runs containers.
+The same application as the SPK, packaged as a Docker image for anyone who does not have a Synology NAS. It runs on any host that runs containers, with an Intel/AMD (x86_64) or ARM (64-bit, for example Raspberry Pi 4/5) processor.
 
 > **Provided "as is", without warranty of any kind** (MIT License). **The container edition is provided as a convenience and has not been tested by its author**, who runs the SPK on a Synology NAS. Reports of problems are welcome as GitHub issues. Make a backup (Settings → Backups) before every update.
 
@@ -15,7 +15,7 @@ The app has no login of its own. Anyone who can reach the published port can rea
 3. Start it: `docker compose up -d`
 4. Open `http://<host address>:8765/`.
 
-Image: `ghcr.io/johnioan/cyklo` (tags: a version such as `0.1.8`, and `latest`). Platform: `linux/amd64` only.
+Image: `ghcr.io/johnioan/cyklo` (tags: a version such as `0.1.8`, and `latest`). Platforms: `linux/amd64` and `linux/arm64` (32-bit ARM is not supported). Neither has been tested by the author.
 
 ## Settings
 

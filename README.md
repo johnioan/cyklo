@@ -35,7 +35,7 @@ Sample data only; the companies shown are fictional.
 The package declares `arch="x86_64 apollolake"`. Other platforms are untested.
 
 ### Container (Docker) edition
-For those without a Synology NAS, an alternative container image for x86_64 hosts is described in [docs/DOCKER.md](docs/DOCKER.md): `docker compose up -d` with the included `docker-compose.yml`. The author does not use it and has not tested it.
+For those without a Synology NAS, an alternative container image for Intel/AMD and 64-bit ARM hosts is described in [docs/DOCKER.md](docs/DOCKER.md): `docker compose up -d` with the included `docker-compose.yml`. The author does not use it and has not tested it.
 
 ## Repository
 - `app/` – Go server and web interface

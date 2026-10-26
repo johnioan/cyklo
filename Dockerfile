@@ -1,11 +1,13 @@
-# Cyklo container image (x86_64 / linux/amd64).
+# Cyklo container image (linux/amd64 and linux/arm64).
 # Build:  docker build --build-arg VERSION=0.1.8 -t cyklo .
 
-FROM golang:1.24-alpine AS build
+FROM --platform=$BUILDPLATFORM golang:1.24-alpine AS build
 ARG VERSION=dev
+ARG TARGETOS=linux
+ARG TARGETARCH=amd64
 WORKDIR /src
 COPY app/ ./
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
     go build -trimpath -ldflags "-s -w -X main.version=${VERSION}" -o /out/cyklo .
 
 FROM alpine:3.20
