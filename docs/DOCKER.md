@@ -1,8 +1,8 @@
 # Cyklo – container edition
 
-The same application as the SPK, packaged as a Docker image for any x86_64 host that runs containers (for example Synology Container Manager).
+The same application as the SPK, packaged as a Docker image for anyone who does not have a Synology NAS. It runs on any x86_64 host that runs containers.
 
-> **Provided "as is", without warranty of any kind** (MIT License). **The container edition is untested** by its author. Make a backup (Settings → Backups) before every update.
+> **Provided "as is", without warranty of any kind** (MIT License). **The container edition is provided as a convenience and has not been tested by its author**, who runs the SPK on a Synology NAS. Reports of problems are welcome as GitHub issues. Make a backup (Settings → Backups) before every update.
 
 ## Security note
 
