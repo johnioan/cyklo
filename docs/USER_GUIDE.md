@@ -37,7 +37,7 @@ The navigation contains: **Home**, **Subscriptions**, **Reports**, **Calendar**,
 - **Next 12 months**: known amounts for the next 12 months.
 - **Active subscriptions**: paused ones are excluded.
 - **Next payment**: the closest upcoming charge.
-- Clicking an upcoming payment, the **Next payment** tile or the **Active subscriptions** tile opens the subscription or the filtered list. Saving or cancelling returns to the screen it was opened from.
+- Clicking an upcoming payment opens the subscription; saving or cancelling returns to the screen it was opened from. The **Next payment** tile shows that subscription in a window, and the **Active subscriptions** tile opens the list of active ones.
 - **Upcoming payments**, **Spending by category** and **Spending by month** (last 12 months).
 - The version number at the bottom opens the release notes of all versions.
 - A notice appears when variable-amount subscriptions are waiting for a bill to be entered.

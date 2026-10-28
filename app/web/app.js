@@ -207,7 +207,7 @@ function subRow(s, opts = {}) {
     amount = money(s.amount);
     nextLine = t('next.label') + ': ' + fdate(s.next.date);
   }
-  const canRecord = s.status === 'active' && s.amountType === 'variable' && s.next.date;
+  const canRecord = !opts.noRecord && s.status === 'active' && s.amountType === 'variable' && s.next.date;
   const go = opts.nav ? ' go" data-go="#/edit/' + s.id + '" tabindex="0" role="link" title="' + esc(t('row.open')) : '';
   return '<div class="row' + go + '"><div class="main"><div class="ico" aria-hidden="true" style="background:' + colorOf(s.categoryId) + '">' + esc(initialOf(s.company)) + '</div><div style="min-width:0"><div class="t">' + esc(s.title) +
     '</div><div class="m">' + esc(opts.short ? methodLabel(s.method, s.cardName, s.methodName) + ' · ' + t('freq.' + s.frequency) : subMeta(s)) + '</div></div></div>' +
@@ -260,7 +260,7 @@ async function viewHome() {
     stat(t('home.month'), money(d.monthTotal), t('home.monthHint')) +
     stat(t('home.year'), money(d.yearTotal), t('home.yearHint')) +
     stat(t('home.active'), String(d.activeCount), t('home.activeHint'), 'data-act="tileactive"', t('home.openActive')) +
-    stat(t('home.next'), nextVal, next ? esc(next.title) : '', next ? 'data-go="#/edit/' + next.id + '"' : '', t('home.openNext')) + '</div>' +
+    stat(t('home.next'), nextVal, next ? esc(next.title) : '', next ? 'data-act="nextmodal" data-id="' + next.id + '"' : '', '') + '</div>' +
     (d.missingCount ? '<div class="note"><i></i>' + t('home.missing', d.missingCount) + '</div>' : '') +
     '<div class="cols"><div class="glass card a"><div class="head"><h2>' + t('home.upcoming') + '</h2><a class="btn link" href="#/subs">' + t('home.all') + '</a></div>' + upcoming + '</div>' +
     '<div class="glass card b"><h2 style="margin-bottom:14px">' + t('home.byCategory') + '</h2>' +
@@ -733,6 +733,11 @@ document.addEventListener('click', async (e) => {
     }
     else if (act === 'tileactive') { ui.subs.status = 'active'; ui.subs.cat = ''; ui.subs.q = ''; location.hash = '#/subs'; }
     else if (act === 'egg') showEgg();
+    else if (act === 'nextmodal') {
+      const sv = await api('/subs/' + b.dataset.id);
+      const res = await modal({ title: t('home.next'), body: subRow(sv, { status: true, noRecord: true }), actions: [{ label: t('notes.close'), value: null }, { label: t('edit'), cls: 'primary', value: 'edit' }] });
+      if (res === 'edit') { ui.returnTo = '#/'; location.hash = '#/edit/' + sv.id; }
+    }
     else if (act === 'substab') { ui.subs.status = v; render(); }
     else if (act === 'record') recordFlow(Number(b.dataset.id), render);
     else if (act === 'repview') { ui.rep.view = v; ui.rep.open = null; render(); }
