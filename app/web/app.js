@@ -82,10 +82,10 @@ function toast(msg, bad) {
   setTimeout(() => el.remove(), 3200);
 }
 
-function modal({ title, body, actions }) {
+function modal({ title, body, actions, cls }) {
   return new Promise((resolve) => {
     const m = document.createElement('div');
-    m.className = 'modal';
+    m.className = 'modal' + (cls ? ' ' + cls : '');
     m.innerHTML = '<div class="box glass" role="dialog" aria-modal="true" aria-label="' + esc(title) + '"><h3>' + esc(title) + '</h3>' + (body || '') +
       '<div class="acts">' + actions.map((a, i) => '<button class="btn ' + (a.cls || '') + '" data-i="' + i + '">' + esc(a.label) + '</button>').join('') + '</div></div>';
     document.body.appendChild(m);
@@ -735,7 +735,7 @@ document.addEventListener('click', async (e) => {
     else if (act === 'egg') showEgg();
     else if (act === 'nextmodal') {
       const sv = await api('/subs/' + b.dataset.id);
-      const res = await modal({ title: t('home.next'), body: subRow(sv, { status: true, noRecord: true }), actions: [{ label: t('notes.close'), value: null }, { label: t('edit'), cls: 'primary', value: 'edit' }] });
+      const res = await modal({ title: t('home.next'), cls: 'wide', body: subRow(sv, { status: true, noRecord: true }), actions: [{ label: t('notes.close'), value: null }, { label: t('edit'), cls: 'primary', value: 'edit' }] });
       if (res === 'edit') { ui.returnTo = '#/'; location.hash = '#/edit/' + sv.id; }
     }
     else if (act === 'substab') { ui.subs.status = v; render(); }

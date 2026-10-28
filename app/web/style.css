@@ -223,3 +223,5 @@ nav.top .r{display:flex;align-items:center;gap:10px}
 .eggmeter i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#2ec4b6,#ffb703,#ff4d6d)}
 @keyframes eggbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 @media (prefers-reduced-motion:reduce){.egghead span{animation:none}.go,.starbtn{transition:none}}
+
+.modal.wide .box{max-width:min(760px,100%)}
