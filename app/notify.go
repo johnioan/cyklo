@@ -156,7 +156,16 @@ func (d *Data) dueReminders(t time.Time) []pending {
 			if !s.MissingBillReminder {
 				continue
 			}
+			// reminder number n is due on day 1 + (n-1)*interval after the due date;
+			// when several are overdue (e.g. the app was off) only the latest one is sent
+			n := (-info.Days-1)/s.RepeatDays() + 1
+			if n > s.RepeatMax() {
+				n = s.RepeatMax()
+			}
 			key := fmt.Sprintf("m:%d:%s", sub.ID, info.Date)
+			if n > 1 {
+				key += fmt.Sprintf(":%d", n)
+			}
 			if !sent[key] {
 				out = append(out, pending{key, trf(s.Lang, "n.missing", title, longDate(s.Lang, dt)), sub.RemindEmail, sub.RemindPush})
 			}
@@ -208,8 +217,8 @@ func (n *Notifier) Check(now time.Time) {
 		if pErr != nil {
 			log.Printf("pushover reminder failed: %v", pErr)
 		}
-		// mark as sent when at least one channel worked, or nothing is enabled for it
-		if (tE && eErr == nil) || (tP && pErr == nil) || (!tE && !tP) {
+		// mark as sent only when at least one channel delivered it; otherwise it stays pending
+		if (tE && eErr == nil) || (tP && pErr == nil) {
 			done = append(done, p.key)
 		}
 	}

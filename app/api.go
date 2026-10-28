@@ -912,6 +912,22 @@ func (a *API) putSettings(w http.ResponseWriter, r *http.Request) {
 		if in.SendHour < 0 || in.SendHour > 23 {
 			return errors.New("sendHour")
 		}
+		if in.MissingRepeatDays == 0 {
+			in.MissingRepeatDays = s.RepeatDays()
+		}
+		if in.MissingRepeatMax == 0 {
+			in.MissingRepeatMax = s.RepeatMax()
+		}
+		switch in.MissingRepeatDays {
+		case 1, 2, 3, 5, 7:
+		default:
+			return errors.New("missingRepeatDays")
+		}
+		switch in.MissingRepeatMax {
+		case 1, 2, 3, 5:
+		default:
+			return errors.New("missingRepeatMax")
+		}
 		if in.AuthMode != "off" && in.AuthMode != "dsm" {
 			return errors.New("authMode")
 		}
@@ -930,6 +946,7 @@ func (a *API) putSettings(w http.ResponseWriter, r *http.Request) {
 		}
 		s.Lang, s.Currency, s.RemindDays, s.SendHour = in.Lang, in.Currency, in.RemindDays, in.SendHour
 		s.MissingBillReminder = in.MissingBillReminder
+		s.MissingRepeatDays, s.MissingRepeatMax = in.MissingRepeatDays, in.MissingRepeatMax
 		s.EmailEnabled, s.PushEnabled = in.EmailEnabled, in.PushEnabled
 		s.PushoverUser = strings.TrimSpace(in.PushoverUser)
 		if tok := strings.TrimSpace(in.PushoverToken); tok != "" {

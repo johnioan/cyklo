@@ -37,7 +37,9 @@ The navigation contains: **Home**, **Subscriptions**, **Reports**, **Calendar**,
 - **Next 12 months**: known amounts for the next 12 months.
 - **Active subscriptions**: paused ones are excluded.
 - **Next payment**: the closest upcoming charge.
+- Clicking an upcoming payment, the **Next payment** tile or the **Active subscriptions** tile opens the subscription or the filtered list. Saving or cancelling returns to the screen it was opened from.
 - **Upcoming payments**, **Spending by category** and **Spending by month** (last 12 months).
+- The version number at the bottom opens the release notes of all versions.
 - A notice appears when variable-amount subscriptions are waiting for a bill to be entered.
 
 ### Subscriptions
@@ -103,7 +105,7 @@ Reminders are sent through [Pushover](https://pushover.net), a third-party servi
 3. In the Pushover website create an **Application / API Token** (any name, for example "Cyklo").
 4. In Cyklo open **Settings → Notifications → Pushover** and enter the User Key and the API Token.
 5. Press **Send test notification** to confirm that it reaches the phone.
-6. Set the **Default reminder** (days before payment), the **Send time**, and optionally **Remind when a variable-amount bill is missing**.
+6. Set the **Default reminder** (days before payment), the **Send time**, and optionally **Remind when a variable-amount bill is missing**. When that option is on, **Repeat reminder every** (1, 2, 3, 5 or 7 days) and **Maximum number of reminders** (1, 2, 3 or 5) control how often the missing-bill reminder is repeated; the first one is sent the day after the bill date, and repetition stops once the amount is entered or the bill is skipped.
 
 The token is stored in the app's data file on the NAS and is not displayed again after saving. The data file is not encrypted. Each subscription can override the reminder setting in its own form.
 

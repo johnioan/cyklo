@@ -1,7 +1,7 @@
 name: Container image
 
 # Builds the container edition of an existing version of Cyklo.
-# Run manually: GitHub -> Actions -> "Container image" -> Run workflow, and enter the version (for example 0.1.7).
+# Run manually: GitHub -> Actions -> "Container image" -> Run workflow, and enter the version (for example 0.1.8).
 # It also runs when a tag such as v0.1.8 is pushed.
 on:
   push:
@@ -9,9 +9,9 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version number of the image (same as the SPK version, e.g. 0.1.7)"
+        description: "Version number of the image (same as the SPK version, e.g. 0.1.8)"
         required: true
-        default: "0.1.7"
+        default: "0.1.8"
 
 permissions:
   contents: read

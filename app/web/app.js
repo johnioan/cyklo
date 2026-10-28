@@ -208,7 +208,8 @@ function subRow(s, opts = {}) {
     nextLine = t('next.label') + ': ' + fdate(s.next.date);
   }
   const canRecord = s.status === 'active' && s.amountType === 'variable' && s.next.date;
-  return '<div class="row"><div class="main"><div class="ico" aria-hidden="true" style="background:' + colorOf(s.categoryId) + '">' + esc(initialOf(s.company)) + '</div><div style="min-width:0"><div class="t">' + esc(s.title) +
+  const go = opts.nav ? ' go" data-go="#/edit/' + s.id + '" tabindex="0" role="link" title="' + esc(t('row.open')) : '';
+  return '<div class="row' + go + '"><div class="main"><div class="ico" aria-hidden="true" style="background:' + colorOf(s.categoryId) + '">' + esc(initialOf(s.company)) + '</div><div style="min-width:0"><div class="t">' + esc(s.title) +
     '</div><div class="m">' + esc(opts.short ? methodLabel(s.method, s.cardName, s.methodName) + ' · ' + t('freq.' + s.frequency) : subMeta(s)) + '</div></div></div>' +
     '<div class="side">' + (opts.status ? statusChip(s.status) : '') + '<div style="min-width:120px"><div class="amt">' + amount + '</div><div class="m">' + esc(nextLine) + '</div></div>' +
     (canRecord ? '<button class="btn" data-act="record" data-id="' + s.id + '">' + t('record.btn') + '</button>' : '') +
@@ -243,23 +244,23 @@ async function recordFlow(id, reload) {
 
 // ---------- screens ----------
 async function viewHome() {
-  const d = await api('/dashboard');
+  const [d, ver] = await Promise.all([api('/dashboard'), api('/version').catch(() => ({ version: '' }))]);
   if (!d.subCount) {
     page('home', '<div class="glass card empty"><b>' + t('home.emptyTitle') + '</b><span>' + t('home.emptyText') + '</span><div style="margin-top:16px"><a class="btn primary" href="#/new">+ ' + t('nav.new') + '</a></div></div>');
     return;
   }
   const next = d.next;
   const nextVal = next ? (next.next.days === 0 ? t('days.today') : t('days.in', next.next.days)) : '—';
-  const stat = (k, v, dd) => '<div class="glass stat"><div class="k">' + k + '</div><div class="v">' + v + '</div><div class="d">' + dd + '</div></div>';
+  const stat = (k, v, dd, attrs, hint) => '<div class="glass stat' + (attrs ? ' go' : '') + '"' + (attrs ? ' ' + attrs + ' tabindex="0" role="link" title="' + esc(hint) + '"' : '') + '><div class="k">' + k + '</div><div class="v">' + v + '</div><div class="d">' + dd + '</div></div>';
   const maxMonth = Math.max(1, ...d.months.map((m) => m.amount));
   const curMonth = todayStr().slice(0, 7);
-  const upcoming = d.upcoming.map((s) => subRow(s, { short: true })).join('') || '<div class="sub" style="padding:14px">—</div>';
+  const upcoming = d.upcoming.map((s) => subRow(s, { short: true, nav: true })).join('') || '<div class="sub" style="padding:14px">—</div>';
   page('home',
     '<div class="stats">' +
     stat(t('home.month'), money(d.monthTotal), t('home.monthHint')) +
     stat(t('home.year'), money(d.yearTotal), t('home.yearHint')) +
-    stat(t('home.active'), String(d.activeCount), t('home.activeHint')) +
-    stat(t('home.next'), nextVal, next ? esc(next.title) : '') + '</div>' +
+    stat(t('home.active'), String(d.activeCount), t('home.activeHint'), 'data-act="tileactive"', t('home.openActive')) +
+    stat(t('home.next'), nextVal, next ? esc(next.title) : '', next ? 'data-go="#/edit/' + next.id + '"' : '', t('home.openNext')) + '</div>' +
     (d.missingCount ? '<div class="note"><i></i>' + t('home.missing', d.missingCount) + '</div>' : '') +
     '<div class="cols"><div class="glass card a"><div class="head"><h2>' + t('home.upcoming') + '</h2><a class="btn link" href="#/subs">' + t('home.all') + '</a></div>' + upcoming + '</div>' +
     '<div class="glass card b"><h2 style="margin-bottom:14px">' + t('home.byCategory') + '</h2>' +
@@ -267,10 +268,12 @@ async function viewHome() {
     '</div></div>' +
     '<div class="glass card"><div class="head"><h2>' + t('home.byMonth') + '</h2><span class="sub">' + t('home.last12') + '</span></div><div class="months">' +
     d.months.map((m) => '<div class="c ' + (m.month === curMonth ? 'cur' : '') + '" title="' + esc(m.month + ': ' + money(m.amount)) + '"><div class="bar" style="height:' + Math.round(m.amount / maxMonth * 100) + '%"></div><div class="lb">' + MONTHS[lang][Number(m.month.slice(5)) - 1] + '</div></div>').join('') +
-    '</div></div>');
+    '</div></div>' +
+    (ver.version ? '<div class="verline"><button class="verbtn" data-act="notes" title="' + esc(t('ver.open')) + '">Cyklo ' + esc(ver.version) + '</button><button class="starbtn" data-act="egg" aria-label="' + esc(t('egg.btn')) + '" title="' + esc(t('egg.btn')) + '">★</button></div>' : ''));
 }
 
 const ui = {
+  returnTo: '',
   subs: { status: 'all', q: '', cat: '' },
   rep: { view: 'method', period: 'month', date: '', status: 'active', open: null },
   cal: { month: null, sel: null },
@@ -358,7 +361,7 @@ async function viewCalendar() {
     cells += '<button class="day ' + (out ? 'out ' : '') + (ds === now ? 'today ' : '') + (ds === f.sel ? 'sel' : '') + '" data-act="calsel" data-d="' + ds + '"><div class="n">' + dt.getUTCDate() + '</div>' + chips + '</button>';
   }
   const selEvents = byDate[f.sel] || [];
-  const selHtml = selEvents.length ? selEvents.map((e) => '<div class="row" style="margin-top:6px"><div class="main"><div><div class="t">' + esc(e.title) + '</div><div class="m">' +
+  const selHtml = selEvents.length ? selEvents.map((e) => '<div class="row go" data-go="#/edit/' + e.subId + '" tabindex="0" role="link" title="' + esc(t('row.open')) + '" style="margin-top:6px"><div class="main"><div><div class="t">' + esc(e.title) + '</div><div class="m">' +
     (e.amount === null ? t('state.' + (e.state === 'missing' ? 'missing' : 'awaiting')) : (e.state === 'upcoming' ? t('cal.upcoming') : t('cal.charged'))) + '</div></div></div><div class="amt">' + (e.amount !== null ? money(e.amount) : '—') + '</div></div>').join('') : '<div class="sub">' + t('cal.noPay') + '</div>';
   page('calendar',
     '<div class="toolbar"><div class="monthnav"><h1>' + MONTHS_LONG[lang][m - 1] + ' ' + y + '</h1><button class="btn" data-act="calmove" data-v="-1" aria-label="' + t('cal.prev') + '">‹</button><button class="btn" data-act="calmove" data-v="1" aria-label="' + t('cal.next') + '">›</button><button class="btn" data-act="caltoday">' + t('cal.today') + '</button></div></div>' +
@@ -371,6 +374,7 @@ async function viewCalendar() {
 
 // ----- new / edit subscription -----
 async function viewForm(id) {
+  const back = ui.returnTo || '#/subs';
   const lists = await api('/lists');
   let s;
   if (id) s = await api('/subs/' + id);
@@ -406,7 +410,7 @@ async function viewForm(id) {
     '<div class="field"><label for="notes">' + t('form.notes') + '</label><textarea class="txt" id="notes" rows="3" maxlength="500">' + esc(s.notes) + '</textarea></div>' +
     (id ? '<div class="field"><div class="lab">' + t('form.status') + '</div><div class="seg">' + ['active', 'paused', 'cancelled'].map((st) => '<button type="button" data-act="stset" data-v="' + st + '" class="' + (s.status === st ? 'on' : '') + '">' + t('status.' + st) + '</button>').join('') + '</div></div>' : '') +
     '<div class="err" id="ferr"></div>' +
-    '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;padding-top:6px"><div>' + (id ? '<button class="btn danger" data-act="del" type="button">' + t('delete') + '</button>' : '') + '</div><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#/subs">' + t('cancel') + '</a><button class="btn primary" data-act="savesub" type="button">' + t('save') + '</button></div></div></div>');
+    '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;padding-top:6px"><div>' + (id ? '<button class="btn danger" data-act="del" type="button">' + t('delete') + '</button>' : '') + '</div><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="' + back + '">' + t('cancel') + '</a><button class="btn primary" data-act="savesub" type="button">' + t('save') + '</button></div></div></div>');
 
   let atype = s.amountType;
   let manual = !!s.manualNext;
@@ -434,7 +438,7 @@ async function viewForm(id) {
     }
     if (act === 'del') {
       if (await confirmBox(t('form.delTitle'), t('form.delText'), t('delete'), true)) {
-        try { await api('/subs/' + id, { method: 'DELETE' }); toast(t('deleted')); location.hash = '#/subs'; } catch (er) { toast(errText(er), true); }
+        try { await api('/subs/' + id, { method: 'DELETE' }); toast(t('deleted')); location.hash = back; } catch (er) { toast(errText(er), true); }
       }
     }
     if (act === 'savesub') {
@@ -449,7 +453,7 @@ async function viewForm(id) {
       try {
         if (id) await api('/subs/' + id, { method: 'PUT', body }); else await api('/subs', { method: 'POST', body });
         toast(t('saved'));
-        location.hash = '#/subs';
+        location.hash = back;
       } catch (er) { $('#ferr').textContent = errText(er); }
     }
   });
@@ -496,9 +500,11 @@ async function viewSettings() {
     ['card', 'paypal', 'applepay'].map((k) => '<div class="setrow"><div class="t">' + esc(t('method.' + k)) + ' <span>· ' + t('set.builtin') + '</span></div></div>').join('') + listRows(L.methods, 'method') +
     '<div class="addrow"><label for="newmethod" style="position:absolute;width:1px;height:1px;overflow:hidden">' + t('set.newMethod') + '</label><input class="inp" id="newmethod" placeholder="' + esc(t('set.newMethodPh')) + '" maxlength="60"><button class="btn" data-act="addmethod">' + t('add') + '</button></div></div>' +
     '<div class="glass card stack"><div><h2>' + t('set.notif') + '</h2><div class="sub" style="margin-top:4px">' + t('set.notifHint') + '</div></div>' +
-    '<div class="grid2" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))"><div class="field"><label for="sdays">' + t('set.days') + '</label><select class="sel" id="sdays">' + sel([[7, t('remind.n', 7)], [3, t('remind.n', 3)], [1, t('remind.1')]], s.remindDays) + '</select><div class="hint">' + t('set.daysHint') + '</div></div>' +
-    '<div class="field"><label for="shour">' + t('set.hour') + '</label><select class="sel" id="shour">' + [9, 8, 12, 18].map((h) => '<option value="' + h + '"' + (s.sendHour === h ? ' selected' : '') + '>' + pad(h) + ':00</option>').join('') + '</select></div></div>' +
-    '<label class="chk"><input type="checkbox" id="smiss"' + (s.missingBillReminder ? ' checked' : '') + '>' + t('set.missing') + '</label>' +
+    '<div class="grid2" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))"><div class="field"><div class="lab"><label for="sdays">' + t('set.days') + '</label>' + tip(t('set.daysTip'), t('set.days')) + '</div><select class="sel" id="sdays">' + sel([[7, t('remind.n', 7)], [3, t('remind.n', 3)], [1, t('remind.1')]], s.remindDays) + '</select></div>' +
+    '<div class="field"><div class="lab"><label for="shour">' + t('set.hour') + '</label>' + tip(t('set.hourTip'), t('set.hour')) + '</div><select class="sel" id="shour">' + [9, 8, 12, 18].map((h) => '<option value="' + h + '"' + (s.sendHour === h ? ' selected' : '') + '>' + pad(h) + ':00</option>').join('') + '</select></div></div>' +
+    '<div class="stack" style="gap:6px"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><label class="chk"><input type="checkbox" id="smiss"' + (s.missingBillReminder ? ' checked' : '') + '>' + t('set.missing') + '</label>' + tip(t('set.missingTip'), t('set.missing')) + '</div>' +
+    '<div class="grid2 subopts" id="smissbox" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))"><div class="field"><div class="lab"><label for="srdays">' + t('set.repeatDays') + '</label>' + tip(t('set.repeatDaysTip'), t('set.repeatDays')) + '</div><select class="sel" id="srdays">' + sel([[1, t('set.rd.1')], [2, t('set.rd.n', 2)], [3, t('set.rd.n', 3)], [5, t('set.rd.n', 5)], [7, t('set.rd.n', 7)]], s.missingRepeatDays || 3) + '</select></div>' +
+    '<div class="field"><div class="lab"><label for="srmax">' + t('set.repeatMax') + '</label>' + tip(t('set.repeatMaxTip'), t('set.repeatMax')) + '</div><select class="sel" id="srmax">' + sel([[1, '1'], [2, '2'], [3, '3'], [5, '5']], s.missingRepeatMax || 3) + '</select></div></div></div>' +
     '<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">' + (EMAIL_UI ? '<div class="chan"><label class="chk" style="font-weight:600;font-size:15px"><input type="checkbox" id="semail"' + (s.emailEnabled ? ' checked' : '') + '>' + t('notif.email') + '</label><div class="hint">' + t('set.emailHint') + '</div></div>' : '') +
     '<div class="chan"><label class="chk" style="font-weight:600;font-size:15px"><input type="checkbox" id="spush"' + (s.pushEnabled ? ' checked' : '') + '>' + t('set.pushover') + '</label>' +
     '<div class="field"><label for="puser">' + t('set.puser') + '</label><input class="inp" id="puser" autocomplete="off" placeholder="' + esc(t('set.puserPh')) + '" value="' + esc(s.pushoverUser) + '"></div>' +
@@ -508,8 +514,15 @@ async function viewSettings() {
     '<div class="glass card stack"><div><h2>' + t('set.security') + '</h2><div class="sub" style="margin-top:4px">' + t('set.securityHint') + '</div></div>' +
     (AUTH_UI ? '<div class="grid2" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))"><div class="field"><label for="sauth">' + t('set.auth') + '</label><select class="sel" id="sauth">' + sel([['off', t('set.auth.off')], ['dsm', t('set.auth.dsm')]], s.authMode) + '</select></div>' +
     '<div class="field"><div class="lab">' + t('set.authCheck') + '</div><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn" data-act="authprobe">' + t('set.authProbe') + '</button><span id="authres" class="sub"></span></div></div></div>'  : '') +
-    '<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center"><a class="btn" href="/api/backup">' + t('set.backup') + '</a><button class="btn" data-act="restore">' + t('set.restore') + '</button><input type="file" id="rfile" accept=".json,application/json" style="display:none"><span class="hint">' + t('set.backupHint') + '</span></div></div>' +
+    '<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center"><a class="btn" href="/api/backup">' + t('set.backup') + '</a><button class="btn" data-act="restore">' + t('set.restore') + '</button><input type="file" id="rfile" accept=".json,application/json" style="display:none"><span class="hint">' + t('set.backupHint') + '</span></div><div class="note"><i></i>' + t('set.backupWarn') + '</div></div>' +
     '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px"><span class="sub"><span id="ver"></span> · <button class="btn link" data-act="notes">' + t('notes.all') + '</button></span><div style="display:flex;gap:10px"><a class="btn" href="#/">' + t('cancel') + '</a><button class="btn primary" data-act="savesettings">' + t('save') + '</button></div></div>');
+  const syncMiss = () => {
+    const on = $('#smiss').checked;
+    $('#smissbox').classList.toggle('off', !on);
+    $('#srdays').disabled = !on; $('#srmax').disabled = !on;
+  };
+  $('#smiss').addEventListener('change', syncMiss);
+  syncMiss();
   api('/version').then((v) => { const e = $('#ver'); if (e) e.textContent = 'Cyklo ' + v.version; }).catch(() => {});
   $('#rfile').addEventListener('change', async (e) => {
     const file = e.target.files[0];
@@ -527,7 +540,7 @@ async function viewSettings() {
 async function saveSettings() {
   const body = {
     lang: $('#slang').value, currency: $('#scur').value, remindDays: Number($('#sdays').value), sendHour: Number($('#shour').value),
-    missingBillReminder: $('#smiss').checked, emailEnabled: EMAIL_UI ? $('#semail').checked : false, pushEnabled: $('#spush').checked,
+    missingBillReminder: $('#smiss').checked, missingRepeatDays: Number($('#srdays').value), missingRepeatMax: Number($('#srmax').value), emailEnabled: EMAIL_UI ? $('#semail').checked : false, pushEnabled: $('#spush').checked,
     pushoverUser: $('#puser').value, pushoverToken: $('#ptoken').value, clearToken: $('#pclear') ? $('#pclear').checked : false,
     onboardingDone: true, authMode: AUTH_UI ? $('#sauth').value : 'off',
   };
@@ -563,7 +576,7 @@ function viewOnboarding() {
 
 async function onbFinish(skip) {
   const body = {
-    lang: onb.lang, currency: onb.currency, remindDays: skip ? 7 : onb.days, sendHour: 9, missingBillReminder: true,
+    lang: onb.lang, currency: onb.currency, remindDays: skip ? 7 : onb.days, sendHour: 9, missingBillReminder: true, missingRepeatDays: 3, missingRepeatMax: 3,
     emailEnabled: skip ? false : onb.email, pushEnabled: skip ? false : onb.push, pushoverUser: '', pushoverToken: '', clearToken: false,
     onboardingDone: true, authMode: settings.authMode,
   };
@@ -578,6 +591,83 @@ async function onbFinish(skip) {
 function showLogin() {
   const host = location.protocol + '//' + location.hostname + ':5000/';
   $('#app').innerHTML = '<div class="onb"><div class="glass box"><h1 style="font-size:24px">' + t('login.title') + '</h1><div class="sub">' + t('login.text') + '</div><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn primary" href="' + host + '" target="_blank" rel="noopener">' + t('login.open') + '</a><button class="btn" onclick="location.reload()">' + t('login.retry') + '</button></div></div></div>';
+}
+
+// ---------- easter egg ----------
+function confetti(canvas, stop) {
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width = window.innerWidth, H = canvas.height = window.innerHeight;
+  const colors = ['#ff4d6d', '#ffb703', '#2ec4b6', '#4d6fe8', '#9b5de5', '#f15bb5', '#80ed99'];
+  const parts = [];
+  const burst = (x, y, n) => {
+    for (let i = 0; i < n; i++) {
+      const a = Math.random() * Math.PI * 2, v = 5 + Math.random() * 11;
+      const coin = Math.random() < 0.25;
+      parts.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 6, w: coin ? 11 : 6 + Math.random() * 6, h: coin ? 11 : 4 + Math.random() * 5,
+        r: Math.random() * 6.28, vr: (Math.random() - 0.5) * 0.4, c: coin ? '#f6c945' : colors[Math.floor(Math.random() * colors.length)], coin, ph: Math.random() * 6.28, life: 0 });
+    }
+  };
+  burst(W * 0.5, H * 0.35, 90);
+  setTimeout(() => burst(W * 0.2, H * 0.45, 60), 350);
+  setTimeout(() => burst(W * 0.8, H * 0.45, 60), 650);
+  setTimeout(() => burst(W * 0.5, H * 0.25, 80), 1100);
+  const t0 = performance.now();
+  const tick = (now) => {
+    if (stop.done) { canvas.remove(); return; }
+    ctx.clearRect(0, 0, W, H);
+    parts.forEach((p) => {
+      p.vy += 0.28; p.vx *= 0.992; p.x += p.vx; p.y += p.vy; p.r += p.vr; p.life++;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c;
+      if (p.coin) { ctx.beginPath(); ctx.ellipse(0, 0, p.w / 2, Math.abs(Math.cos(p.ph + p.life * 0.15)) * p.w / 2 + 1, 0, 0, 6.28); ctx.fill(); ctx.strokeStyle = '#b8860b'; ctx.stroke(); }
+      else ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    });
+    if (now - t0 < 5500 && parts.some((p) => p.y < H + 40)) requestAnimationFrame(tick); else canvas.remove();
+  };
+  requestAnimationFrame(tick);
+}
+
+function showEgg() {
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const stop = { done: false };
+  const m = document.createElement('div');
+  m.className = 'modal eggmodal';
+  m.innerHTML = '<div class="box eggbox" role="dialog" aria-modal="true" aria-label="' + esc(t('egg.title')) + '">' +
+    '<div class="egghead"><span>👑</span><span>💎</span><span>✨</span></div><div class="eggstripe"><i></i><i></i><i></i><i></i><i></i></div>' +
+    '<div class="eggbody"><h3>' + esc(t('egg.title')) + '</h3><div class="sub">' + esc(t('egg.sub')) + '</div>' +
+    '<div class="eggrow"><span>' + esc(t('egg.wealth')) + '</span><b id="eggw">' + SYMBOL[settings.currency] + ' 0</b></div>' +
+    '<div class="eggrow"><span>' + esc(t('egg.happy')) + '</span><b><span id="eggm">😐</span> <span id="eggp">0%</span></b></div>' +
+    '<div class="eggmeter"><i id="eggbar"></i></div>' +
+    '<div class="hint">' + esc(t('egg.note')) + '</div>' +
+    '<div class="acts"><button class="btn primary" data-i="0">' + esc(t('notes.close')) + '</button></div></div></div>';
+  document.body.appendChild(m);
+  const close = () => { stop.done = true; m.remove(); document.removeEventListener('keydown', onKey); };
+  const onKey = (e) => { if (e.key === 'Escape') close(); };
+  document.addEventListener('keydown', onKey);
+  m.addEventListener('click', (e) => { if (e.target === m || e.target.closest('button[data-i]')) close(); });
+  const target = 1000000000;
+  const nf = new Intl.NumberFormat(lang === 'el' ? 'el-GR' : 'en-GB');
+  const moods = ['😐', '🙂', '😀', '🤩', '🥳'];
+  const paint = (k) => {
+    const pct = Math.round(k * 100);
+    $('#eggw', m).textContent = SYMBOL[settings.currency] + ' ' + nf.format(Math.round(target * k));
+    $('#eggp', m).textContent = pct + '%';
+    $('#eggbar', m).style.width = pct + '%';
+    $('#eggm', m).textContent = moods[Math.min(moods.length - 1, Math.floor(k * moods.length))];
+  };
+  if (reduce) { paint(1); return; }
+  const cv = document.createElement('canvas');
+  cv.className = 'confetti';
+  document.body.appendChild(cv);
+  confetti(cv, stop);
+  const t0 = performance.now(), dur = 3000;
+  const step = (now) => {
+    if (stop.done) return;
+    const k = Math.min(1, (now - t0) / dur);
+    paint(1 - Math.pow(1 - k, 3));
+    if (k < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
 }
 
 // ---------- release notes ----------
@@ -610,6 +700,7 @@ async function render() {
   const h = location.hash.replace(/^#/, '') || '/';
   try {
     if (!settings) await loadSettings();
+    if (!/^\/(edit\/\d+|new)$/.test(h)) ui.returnTo = '';
     if (!settings.onboardingDone && h !== '/onboarding') { onb.lang = settings.lang; onb.currency = settings.currency; viewOnboarding(); return; }
     if (h === '/' ) return await viewHome();
     if (h === '/subs') return await viewSubs();
@@ -626,6 +717,12 @@ async function render() {
 }
 
 document.addEventListener('click', async (e) => {
+  const go = e.target.closest('[data-go]');
+  if (go && !e.target.closest('button, a, input, select')) {
+    ui.returnTo = location.hash || '#/';
+    location.hash = go.dataset.go;
+    return;
+  }
   const b = e.target.closest('[data-act]');
   if (!b || b.closest('#form')) return;
   const act = b.dataset.act, v = b.dataset.v;
@@ -634,6 +731,8 @@ document.addEventListener('click', async (e) => {
       await api('/settings', { method: 'PUT', body: { ...settings, lang: v, pushoverToken: '', clearToken: false } });
       await loadSettings(); render();
     }
+    else if (act === 'tileactive') { ui.subs.status = 'active'; ui.subs.cat = ''; ui.subs.q = ''; location.hash = '#/subs'; }
+    else if (act === 'egg') showEgg();
     else if (act === 'substab') { ui.subs.status = v; render(); }
     else if (act === 'record') recordFlow(Number(b.dataset.id), render);
     else if (act === 'repview') { ui.rep.view = v; ui.rep.open = null; render(); }
@@ -698,6 +797,10 @@ document.addEventListener('click', async (e) => {
     else if (act === 'restore') $('#rfile').click();
     else if (act === 'notes') await showNotes(true);
   } catch (er) { if (er.message !== 'login') toast(errText(er), true); }
+});
+
+document.addEventListener('keydown', (e) => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('go')) { e.preventDefault(); e.target.click(); }
 });
 
 window.addEventListener('hashchange', render);

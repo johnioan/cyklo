@@ -35,6 +35,8 @@ type Settings struct {
 	RemindDays          int    `json:"remindDays"`
 	SendHour            int    `json:"sendHour"`
 	MissingBillReminder bool   `json:"missingBillReminder"`
+	MissingRepeatDays   int    `json:"missingRepeatDays"` // days between repeated "bill missing" reminders (0 = default)
+	MissingRepeatMax    int    `json:"missingRepeatMax"`  // maximum number of "bill missing" reminders (0 = default)
 	EmailEnabled        bool   `json:"emailEnabled"`
 	PushEnabled         bool   `json:"pushEnabled"`
 	PushoverUser        string `json:"pushoverUser"`
@@ -42,6 +44,22 @@ type Settings struct {
 	OnboardingDone      bool   `json:"onboardingDone"`
 	AuthMode            string `json:"authMode"` // "off" or "dsm"
 	DefaultCats         bool   `json:"defaultCats"`
+}
+
+// RepeatDays returns the interval of the repeated "bill missing" reminders.
+func (s Settings) RepeatDays() int {
+	if s.MissingRepeatDays <= 0 {
+		return 3
+	}
+	return s.MissingRepeatDays
+}
+
+// RepeatMax returns the maximum number of "bill missing" reminders per bill.
+func (s Settings) RepeatMax() int {
+	if s.MissingRepeatMax <= 0 {
+		return 3
+	}
+	return s.MissingRepeatMax
 }
 
 type Category struct {
@@ -102,7 +120,7 @@ func defaultData() *Data {
 	d := &Data{
 		Settings: Settings{
 			Lang: "el", Currency: "EUR", RemindDays: 7, SendHour: 9,
-			MissingBillReminder: true, EmailEnabled: false, PushEnabled: false,
+			MissingBillReminder: true, MissingRepeatDays: 3, MissingRepeatMax: 3, EmailEnabled: false, PushEnabled: false,
 			AuthMode: "off", DefaultCats: true,
 		},
 		NextID: 1,

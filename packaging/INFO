@@ -1,5 +1,5 @@
 package="cyklosub"
-version="0.1.7-0001"
+version="0.1.8-0001"
 os_min_ver="7.0-40000"
 arch="x86_64 apollolake"
 displayname="Cyklo"
