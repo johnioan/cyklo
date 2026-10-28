@@ -208,7 +208,7 @@ function subRow(s, opts = {}) {
     nextLine = t('next.label') + ': ' + fdate(s.next.date);
   }
   const canRecord = s.status === 'active' && s.amountType === 'variable' && s.next.date;
-  const go = opts.nav ? ' go" data-go="#/edit/' + s.id + '" tabindex="0" role="link"' : '';
+  const go = opts.nav ? ' go" data-go="#/edit/' + s.id + '" tabindex="0" role="link" title="' + esc(t('row.open')) : '';
   return '<div class="row' + go + '"><div class="main"><div class="ico" aria-hidden="true" style="background:' + colorOf(s.categoryId) + '">' + esc(initialOf(s.company)) + '</div><div style="min-width:0"><div class="t">' + esc(s.title) +
     '</div><div class="m">' + esc(opts.short ? methodLabel(s.method, s.cardName, s.methodName) + ' · ' + t('freq.' + s.frequency) : subMeta(s)) + '</div></div></div>' +
     '<div class="side">' + (opts.status ? statusChip(s.status) : '') + '<div style="min-width:120px"><div class="amt">' + amount + '</div><div class="m">' + esc(nextLine) + '</div></div>' +
@@ -251,7 +251,7 @@ async function viewHome() {
   }
   const next = d.next;
   const nextVal = next ? (next.next.days === 0 ? t('days.today') : t('days.in', next.next.days)) : '—';
-  const stat = (k, v, dd, attrs, hint) => '<div class="glass stat' + (attrs ? ' go' : '') + '"' + (attrs ? ' ' + attrs + ' tabindex="0" role="link"' : '') + '><div class="k">' + k + '</div><div class="v">' + v + '</div><div class="d">' + dd + '</div></div>';
+  const stat = (k, v, dd, attrs, hint) => '<div class="glass stat' + (attrs ? ' go' : '') + '"' + (attrs ? ' ' + attrs + ' tabindex="0" role="link" title="' + esc(hint) + '"' : '') + '><div class="k">' + k + '</div><div class="v">' + v + '</div><div class="d">' + dd + '</div></div>';
   const maxMonth = Math.max(1, ...d.months.map((m) => m.amount));
   const curMonth = todayStr().slice(0, 7);
   const upcoming = d.upcoming.map((s) => subRow(s, { short: true, nav: true })).join('') || '<div class="sub" style="padding:14px">—</div>';
@@ -269,7 +269,7 @@ async function viewHome() {
     '<div class="glass card"><div class="head"><h2>' + t('home.byMonth') + '</h2><span class="sub">' + t('home.last12') + '</span></div><div class="months">' +
     d.months.map((m) => '<div class="c ' + (m.month === curMonth ? 'cur' : '') + '" title="' + esc(m.month + ': ' + money(m.amount)) + '"><div class="bar" style="height:' + Math.round(m.amount / maxMonth * 100) + '%"></div><div class="lb">' + MONTHS[lang][Number(m.month.slice(5)) - 1] + '</div></div>').join('') +
     '</div></div>' +
-    (ver.version ? '<div class="verline"><button class="verbtn" data-act="notes">Cyklo ' + esc(ver.version) + '</button><button class="starbtn" data-act="egg" aria-label="' + esc(t('egg.btn')) + '">★</button></div>' : ''));
+    (ver.version ? '<div class="verline"><button class="verbtn" data-act="notes" title="' + esc(t('ver.open')) + '">Cyklo ' + esc(ver.version) + '</button><button class="starbtn" data-act="egg" aria-label="' + esc(t('egg.btn')) + '" title="' + esc(t('egg.btn')) + '">★</button></div>' : ''));
 }
 
 const ui = {
@@ -361,7 +361,7 @@ async function viewCalendar() {
     cells += '<button class="day ' + (out ? 'out ' : '') + (ds === now ? 'today ' : '') + (ds === f.sel ? 'sel' : '') + '" data-act="calsel" data-d="' + ds + '"><div class="n">' + dt.getUTCDate() + '</div>' + chips + '</button>';
   }
   const selEvents = byDate[f.sel] || [];
-  const selHtml = selEvents.length ? selEvents.map((e) => '<div class="row go" data-go="#/edit/' + e.subId + '" tabindex="0" role="link" style="margin-top:6px"><div class="main"><div><div class="t">' + esc(e.title) + '</div><div class="m">' +
+  const selHtml = selEvents.length ? selEvents.map((e) => '<div class="row go" data-go="#/edit/' + e.subId + '" tabindex="0" role="link" title="' + esc(t('row.open')) + '" style="margin-top:6px"><div class="main"><div><div class="t">' + esc(e.title) + '</div><div class="m">' +
     (e.amount === null ? t('state.' + (e.state === 'missing' ? 'missing' : 'awaiting')) : (e.state === 'upcoming' ? t('cal.upcoming') : t('cal.charged'))) + '</div></div></div><div class="amt">' + (e.amount !== null ? money(e.amount) : '—') + '</div></div>').join('') : '<div class="sub">' + t('cal.noPay') + '</div>';
   page('calendar',
     '<div class="toolbar"><div class="monthnav"><h1>' + MONTHS_LONG[lang][m - 1] + ' ' + y + '</h1><button class="btn" data-act="calmove" data-v="-1" aria-label="' + t('cal.prev') + '">‹</button><button class="btn" data-act="calmove" data-v="1" aria-label="' + t('cal.next') + '">›</button><button class="btn" data-act="caltoday">' + t('cal.today') + '</button></div></div>' +

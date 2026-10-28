@@ -69,8 +69,8 @@ el: {
   'set.repeatMax': 'Μέγιστος αριθμός υπενθυμίσεων', 'set.repeatMaxTip': 'Συνολικός αριθμός υπενθυμίσεων για κάθε λογαριασμό. Οι υπενθυμίσεις σταματούν νωρίτερα μόλις καταχωρηθεί το ποσό ή παραλειφθεί ο λογαριασμός.',
   'set.rd.1': '1 ημέρα', 'set.rd.n': '{0} ημέρες',
   'set.backupWarn': 'Το αρχείο αντιγράφου περιέχει τα κλειδιά Pushover χωρίς κρυπτογράφηση. Φυλάσσεται σε ασφαλές σημείο και δεν κοινοποιείται.',
-  
-  'egg.btn': 'Δοκιμαστική λειτουργία',
+  'row.open': 'Άνοιγμα για επεξεργασία', 'home.openNext': 'Άνοιγμα της συνδρομής', 'home.openActive': 'Προβολή των ενεργών συνδρομών',
+  'ver.open': 'Τι νέο υπάρχει (όλες οι εκδόσεις)', 'egg.btn': 'Δοκιμαστική λειτουργία',
   'egg.title': 'Πλούτος και ευτυχία ενεργοποιήθηκαν', 'egg.sub': 'Η δοκιμαστική λειτουργία ολοκληρώθηκε', 'egg.note': 'Το υπόλοιπο λογαριασμού δεν επηρεάζεται.',
   'egg.wealth': 'Πλούτος', 'egg.happy': 'Ευτυχία',
   'set.emailHint': 'Η αποστολή γίνεται μέσω των ειδοποιήσεων email του DSM. Απαιτείται να έχει ρυθμιστεί email στο DSM (Πίνακας Ελέγχου → Ειδοποίηση).',
@@ -165,8 +165,8 @@ en: {
   'set.repeatMax': 'Maximum number of reminders', 'set.repeatMaxTip': 'Total number of reminders for each bill. Reminders stop earlier as soon as the amount is entered or the bill is skipped.',
   'set.rd.1': '1 day', 'set.rd.n': '{0} days',
   'set.backupWarn': 'The backup file contains the Pushover keys unencrypted. It should be kept in a safe place and not shared.',
-  
-  'egg.btn': 'Trial feature',
+  'row.open': 'Open to edit', 'home.openNext': 'Open the subscription', 'home.openActive': 'Show active subscriptions',
+  'ver.open': 'What is new (all versions)', 'egg.btn': 'Trial feature',
   'egg.title': 'Wealth and happiness activated', 'egg.sub': 'The trial run has completed', 'egg.note': 'The account balance is not affected.',
   'egg.wealth': 'Wealth', 'egg.happy': 'Happiness',
   'set.emailHint': 'Sent through DSM email notifications. Email must be configured in DSM (Control Panel → Notification).',
