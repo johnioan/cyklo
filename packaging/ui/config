@@ -3,7 +3,7 @@
     "com.cyklosub.App": {
       "type": "url",
       "title": "Cyklo",
-      "desc": "Subscriptions and recurring bills",
+      "desc": "Recurring payments and bills",
       "icon": "images/app_{0}.png",
       "url": "webman/3rdparty/cyklosub/index.html"
     }

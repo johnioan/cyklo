@@ -19,6 +19,8 @@ const (
 
 	TypeFixed    = "fixed"
 	TypeVariable = "variable"
+	// TypeInstallments is a fixed monthly amount that ends after a number of installments.
+	TypeInstallments = "installments"
 
 	MethodCard     = "card"
 	MethodPayPal   = "paypal"
@@ -27,6 +29,8 @@ const (
 	StatusActive    = "active"
 	StatusPaused    = "paused"
 	StatusCancelled = "cancelled"
+	// StatusCompleted is never stored: it is shown for an installment plan whose last installment has passed.
+	StatusCompleted = "completed"
 )
 
 type Settings struct {
@@ -73,24 +77,26 @@ type Card struct {
 }
 
 type Sub struct {
-	ID          int      `json:"id"`
-	Company     string   `json:"company"`
-	Service     string   `json:"service"`
-	CategoryID  int      `json:"categoryId"`
-	AmountType  string   `json:"amountType"`
-	Amount      *float64 `json:"amount"`
-	Frequency   string   `json:"frequency"`
-	StartDate   string   `json:"startDate"`
-	ManualNext  bool     `json:"manualNext"`
-	ManualDate  string   `json:"manualDate"`
-	DueDate     string   `json:"dueDate"` // variable amounts only: date of the bill that is expected next
-	Method      string   `json:"method"`
-	CardID      int      `json:"cardId"`
-	Status      string   `json:"status"`
-	RemindDays  int      `json:"remindDays"` // 0 = no reminder
-	RemindEmail bool     `json:"remindEmail"`
-	RemindPush  bool     `json:"remindPush"`
-	Notes       string   `json:"notes"`
+	ID            int      `json:"id"`
+	Company       string   `json:"company"`
+	Service       string   `json:"service"`
+	CategoryID    int      `json:"categoryId"`
+	AmountType    string   `json:"amountType"`
+	Amount        *float64 `json:"amount"`
+	Frequency     string   `json:"frequency"`
+	StartDate     string   `json:"startDate"`
+	ManualNext    bool     `json:"manualNext"`
+	ManualDate    string   `json:"manualDate"`
+	DueDate       string   `json:"dueDate"` // variable amounts only: date of the bill that is expected next
+	Method        string   `json:"method"`
+	CardID        int      `json:"cardId"`
+	Status        string   `json:"status"`
+	Installments  int      `json:"installments"`  // installment plans only: number of installments
+	PurchasePrice *float64 `json:"purchasePrice"` // installment plans only: optional price of the purchase
+	RemindDays    int      `json:"remindDays"`    // 0 = no reminder
+	RemindEmail   bool     `json:"remindEmail"`
+	RemindPush    bool     `json:"remindPush"`
+	Notes         string   `json:"notes"`
 }
 
 type Payment struct {

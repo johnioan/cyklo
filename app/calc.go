@@ -131,14 +131,39 @@ func anchorFor(s *Sub) (time.Time, bool) {
 	return parseDate(s.StartDate)
 }
 
-// NextInfo describes the next payment of a subscription.
+// NextInfo describes the next payment of a recurring payment.
 type NextInfo struct {
 	Date  string `json:"date"`  // empty when not known
 	State string `json:"state"` // "upcoming", "awaiting" (variable, not yet due), "missing" (variable, overdue)
 	Days  int    `json:"days"`  // days from today (negative when overdue)
+	// installment plans only
+	Index int `json:"index,omitempty"` // number of the next installment (1-based)
+	Total int `json:"total,omitempty"` // number of installments
+	Paid  int `json:"paid,omitempty"`  // installments dated before today
+}
+
+// instPaid counts the installments of a plan dated before t.
+func instPaid(s *Sub, start time.Time, t time.Time) int {
+	paid := 0
+	for paid < s.Installments && occAt(start, FreqMonthly, paid).Before(t) {
+		paid++
+	}
+	return paid
 }
 
 func nextInfo(s *Sub, t time.Time) NextInfo {
+	if s.AmountType == TypeInstallments {
+		start, ok := parseDate(s.StartDate)
+		if !ok || s.Installments < 1 {
+			return NextInfo{}
+		}
+		paid := instPaid(s, start, t)
+		if paid >= s.Installments {
+			return NextInfo{State: "completed", Total: s.Installments, Paid: paid}
+		}
+		n := occAt(start, FreqMonthly, paid)
+		return NextInfo{Date: fmtDate(n), State: "upcoming", Days: int(n.Sub(t).Hours() / 24), Index: paid + 1, Total: s.Installments, Paid: paid}
+	}
 	if s.AmountType == TypeVariable {
 		due, ok := parseDate(s.DueDate)
 		if !ok {
@@ -190,7 +215,7 @@ func advanceDue(s *Sub) {
 	s.DueDate = fmtDate(nextOnOrAfter(anchor, s.Frequency, cur.AddDate(0, 0, 1)))
 }
 
-// Event is one charge (past, expected or missing) of a subscription.
+// Event is one charge (past, expected or missing) of a recurring payment.
 type Event struct {
 	SubID  int      `json:"subId"`
 	Date   string   `json:"date"`
@@ -216,6 +241,27 @@ func (d *Data) eventsBetween(from, to time.Time, statusFilter string) []Event {
 	for i := range d.Subs {
 		s := &d.Subs[i]
 		if !statusAllowed(statusFilter, s.Status) {
+			continue
+		}
+		if s.AmountType == TypeInstallments {
+			start, ok := parseDate(s.StartDate)
+			if !ok {
+				continue
+			}
+			for k := 0; k < s.Installments; k++ {
+				o := occAt(start, FreqMonthly, k)
+				if o.After(to) {
+					break
+				}
+				if o.Before(from) {
+					continue
+				}
+				st := "upcoming"
+				if o.Before(t) {
+					st = "charged"
+				}
+				out = append(out, Event{SubID: s.ID, Date: fmtDate(o), Amount: s.Amount, State: st})
+			}
 			continue
 		}
 		if s.AmountType == TypeFixed {

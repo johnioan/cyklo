@@ -1,13 +1,13 @@
 # Cyklo (cyklosub)
 
-Subscription and recurring-bill manager for Synology DSM, packaged as an SPK.
+Manager of recurring payments (subscriptions, bills, installments) for Synology DSM, packaged as an SPK.
 Greek and English interface, one user per installation.
 For those without a Synology NAS, an untested container (Docker) edition is also provided: see [Container (Docker) edition](#container-docker-edition).
 
 **Provided "as is", without warranty of any kind** (see [LICENSE](LICENSE)). It has been tested by its author on a single Synology DS-918+ with DSM 7.4. Make a backup (Settings → Backups) before every update.
 
 ## Features
-- Fixed-amount subscriptions and variable-amount recurring bills (amount entered per bill)
+- Fixed-amount recurring payments, variable-amount bills (amount entered per bill) and installment plans (fixed amount, set number of installments, optional extra cost)
 - Monthly and 12-month totals, reports by payment method, company and category, payment calendar
 - Custom categories and payment methods; card friendly names only (no card numbers are stored)
 - Reminders through Pushover
@@ -19,10 +19,10 @@ Not working yet: email reminders (hidden), DSM login (removed). The app has no l
 Sample data only; the companies shown are fictional.
 
 ![Home](docs/screenshots/home.png)
-![Subscriptions](docs/screenshots/subscriptions.png)
+![Recurring](docs/screenshots/subscriptions.png)
 ![Reports](docs/screenshots/reports.png)
 ![Calendar](docs/screenshots/calendar.png)
-![New subscription](docs/screenshots/new-subscription.png)
+![New recurring payment](docs/screenshots/new-subscription.png)
 ![Settings](docs/screenshots/settings.png)
 
 ## Documentation

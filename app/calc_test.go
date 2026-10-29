@@ -149,3 +149,105 @@ func TestEventsAndTotals(t *testing.T) {
 		t.Errorf("report %+v", rep)
 	}
 }
+
+func instSub(start string, n int) *Sub {
+	a := 95.0
+	return &Sub{ID: 1, Company: "Public", AmountType: TypeInstallments, Amount: &a, Frequency: FreqMonthly, StartDate: start, Installments: n, Status: StatusActive}
+}
+
+func TestInstallmentProgress(t *testing.T) {
+	s := instSub("2026-01-15", 12)
+	cases := []struct {
+		now       string
+		wantDate  string
+		wantIdx   int
+		wantPaid  int
+		wantState string
+		wantDays  int
+	}{
+		{"2026-01-10", "2026-01-15", 1, 0, "upcoming", 5},
+		{"2026-01-15", "2026-01-15", 1, 0, "upcoming", 0},
+		{"2026-01-16", "2026-02-15", 2, 1, "upcoming", 30},
+		{"2026-10-28", "2026-11-15", 11, 10, "upcoming", 18},
+		{"2026-12-15", "2026-12-15", 12, 11, "upcoming", 0},
+		{"2026-12-16", "", 0, 12, "completed", 0},
+		{"2030-01-01", "", 0, 12, "completed", 0},
+	}
+	for _, c := range cases {
+		ni := nextInfo(s, d(c.now))
+		if ni.Date != c.wantDate || ni.Index != c.wantIdx || ni.Paid != c.wantPaid || ni.State != c.wantState || ni.Days != c.wantDays {
+			t.Errorf("%s: got %+v", c.now, ni)
+		}
+	}
+}
+
+func TestInstallmentEventsAndCompletion(t *testing.T) {
+	defer fixedNow("2026-10-28")()
+	data := defaultData()
+	data.Subs = []Sub{*instSub("2026-01-31", 3)} // 31 Jan, 28 Feb, 31 Mar
+	ev := data.eventsBetween(d("2026-01-01"), d("2026-12-31"), "active")
+	if len(ev) != 3 || ev[0].Date != "2026-01-31" || ev[1].Date != "2026-02-28" || ev[2].Date != "2026-03-31" {
+		t.Fatalf("events %+v", ev)
+	}
+	for _, e := range ev {
+		if e.State != "charged" {
+			t.Errorf("%s should be charged", e.Date)
+		}
+	}
+	if sumEvents(ev) != 285 {
+		t.Errorf("sum %v", sumEvents(ev))
+	}
+	if len(data.eventsBetween(d("2027-01-01"), d("2027-12-31"), "active")) != 0 {
+		t.Error("events after the last installment")
+	}
+	sv := data.subView(&data.Subs[0], today())
+	if sv.Status != StatusCompleted || sv.Next.State != "completed" {
+		t.Errorf("view %+v", sv.Next)
+	}
+	// a completed plan is not remembered by the reminders
+	data.Settings.PushEnabled = true
+	if l := data.dueReminders(today()); len(l) != 0 {
+		t.Errorf("reminders for a completed plan: %v", l)
+	}
+}
+
+func TestValidateInstallments(t *testing.T) {
+	data := defaultData()
+	mk := func(n int, price *float64) *Sub {
+		s := instSub("2026-01-15", n)
+		s.CategoryID = data.Categories[0].ID
+		s.Method = MethodCard
+		s.Frequency = FreqWeekly
+		s.ManualNext = true
+		s.PurchasePrice = price
+		return s
+	}
+	if err := validateSub(data, mk(0, nil)); err == nil {
+		t.Error("zero installments accepted")
+	}
+	if err := validateSub(data, mk(361, nil)); err == nil {
+		t.Error("361 installments accepted")
+	}
+	neg := -5.0
+	if err := validateSub(data, mk(12, &neg)); err == nil {
+		t.Error("negative price accepted")
+	}
+	zero := 0.0
+	s := mk(12, &zero)
+	if err := validateSub(data, s); err != nil {
+		t.Fatal(err)
+	}
+	if s.PurchasePrice != nil || s.Frequency != FreqMonthly || s.ManualNext {
+		t.Errorf("not normalised: %+v", s)
+	}
+	z := instSub("2026-01-15", 12)
+	z.CategoryID, z.Method = data.Categories[0].ID, MethodCard
+	*z.Amount = 0
+	if err := validateSub(data, z); err == nil {
+		t.Error("zero amount accepted")
+	}
+	f := &Sub{Company: "x", CategoryID: data.Categories[0].ID, AmountType: TypeFixed, Amount: new(float64), Frequency: FreqMonthly, StartDate: "2026-01-01", Method: MethodCard, Installments: 5}
+	if err := validateSub(data, f); err != nil || f.Installments != 0 {
+		t.Errorf("fixed sub keeps installments: %v %+v", err, f)
+	}
+}

@@ -145,7 +145,7 @@ func (a *API) exportSubs(w http.ResponseWriter, r *http.Request) {
 			tr(lang, "h.status"), tr(lang, "h.remind"), tr(lang, "h.notes")})
 		for i := range d.Subs {
 			s := &d.Subs[i]
-			if status != "" && status != "all" && s.Status != status {
+			if status != "" && status != "all" && d.subView(s, t).Status != status {
 				continue
 			}
 			if cat != 0 && s.CategoryID != cat {
@@ -170,10 +170,10 @@ func (a *API) exportSubs(w http.ResponseWriter, r *http.Request) {
 				next = ""
 			}
 			tb.rows = append(tb.rows, []any{s.Company, s.Service, d.category(s.CategoryID), tr(lang, s.AmountType), amount,
-				tr(lang, s.Frequency), s.StartDate, next, d.methodName(lang, s.Method), d.card(s.CardID), tr(lang, s.Status), remind, s.Notes})
+				tr(lang, s.Frequency), s.StartDate, next, d.methodName(lang, s.Method), d.card(s.CardID), tr(lang, d.subView(s, t).Status), remind, s.Notes})
 		}
 	})
-	writeTable(w, r, "cyklo-subscriptions-"+fmtDate(time.Now()), lang, tb)
+	writeTable(w, r, "cyklo-recurring-"+fmtDate(time.Now()), lang, tb)
 }
 
 func (a *API) exportReport(w http.ResponseWriter, r *http.Request) {

@@ -144,6 +144,20 @@ function nextOnOrAfter(startStr, freq, fromStr) {
   return occAt(a, freq, k);
 }
 const dstr = (d) => ymd(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+// installment plan: installments dated before today count as paid
+function instInfo(startStr, n) {
+  const a = parts(startStr), today = todayStr();
+  let paid = 0;
+  while (paid < n && dstr(occAt(a, 'monthly', paid)) < today) paid++;
+  return { paid, left: n - paid, next: paid < n ? dstr(occAt(a, 'monthly', paid)) : '', last: dstr(occAt(a, 'monthly', n - 1)) };
+}
+const num = (v) => { const x = parseFloat(String(v).replace(',', '.')); return isNaN(x) ? 0 : x; };
+const r2 = (v) => Math.round(v * 100) / 100;
+const instN = (k) => (k === 1 ? t('inst.n1') : t('inst.n', k));
+function instExtra(s) {
+  if (s.amountType !== 'installments' || !(s.purchasePrice > 0) || !(s.amount > 0) || !(s.installments > 0)) return null;
+  return r2(s.amount * s.installments - s.purchasePrice);
+}
 
 // ---------- date fields (locale independent: day / month / year) ----------
 function yearOpts(sel) {
@@ -190,7 +204,10 @@ function methodLabel(method, cardName, customName) {
   return s;
 }
 function subMeta(s) {
-  return [s.categoryName, t('freq.' + s.frequency), methodLabel(s.method, s.cardName, s.methodName)].join(' · ');
+  const parts2 = [s.categoryName, t('freq.' + s.frequency), methodLabel(s.method, s.cardName, s.methodName)];
+  const ex = instExtra(s);
+  if (ex !== null && ex >= 0) parts2.push(ex === 0 ? t('inst.interestFree') : t('inst.extra') + ' ' + money(ex));
+  return parts2.join(' · ');
 }
 function initialOf(name) { const m = String(name || '').trim().match(/[\p{L}\p{N}]/u); return m ? m[0].toUpperCase() : '?'; }
 function statusChip(st) { return '<span class="chip ' + st + '">' + t('status.' + st) + '</span>'; }
@@ -198,8 +215,11 @@ function statusChip(st) { return '<span class="chip ' + st + '">' + t('status.' 
 function subRow(s, opts = {}) {
   let amount, nextLine;
   if (s.status !== 'active') {
-    amount = s.amountType === 'fixed' ? money(s.amount) : t('type.variable');
-    nextLine = s.status === 'paused' ? t('status.paused') : t('status.cancelled');
+    amount = s.amountType === 'variable' ? t('type.variable') : money(s.amount);
+    nextLine = t('status.' + s.status);
+  } else if (s.amountType === 'installments') {
+    amount = money(s.amount);
+    nextLine = t('next.label') + ': ' + fdate(s.next.date) + ' · ' + t('inst.of', s.next.index, s.next.total);
   } else if (s.amountType === 'variable') {
     amount = '<span class="chip ' + s.next.state + '">' + t('state.' + s.next.state) + '</span>';
     nextLine = (s.next.state === 'missing' ? t('next.expired') : t('next.expected')) + ': ' + fdate(s.next.date);
@@ -266,8 +286,8 @@ async function viewHome() {
     '<div class="glass card b"><h2 style="margin-bottom:14px">' + t('home.byCategory') + '</h2>' +
     (d.categories.length ? d.categories.map((c, i) => '<div class="barrow"><div class="l"><span>' + esc(c.name) + '</span><span>' + c.pct + '%</span></div><div class="track"><div class="fill" style="width:' + Math.max(c.pct, 2) + '%;background:' + BARS[i % BARS.length] + '"></div></div></div>').join('') : '<div class="sub">' + t('home.noData') + '</div>') +
     '</div></div>' +
-    '<div class="glass card"><div class="head"><h2>' + t('home.byMonth') + '</h2><span class="sub">' + t('home.last12') + '</span></div><div class="months">' +
-    d.months.map((m) => '<div class="c ' + (m.month === curMonth ? 'cur' : '') + '" title="' + esc(m.month + ': ' + money(m.amount)) + '"><div class="bar" style="height:' + Math.round(m.amount / maxMonth * 100) + '%"></div><div class="lb">' + MONTHS[lang][Number(m.month.slice(5)) - 1] + '</div></div>').join('') +
+    '<div class="glass card"><div class="head"><h2>' + t('home.byMonth') + '</h2><span class="sub">' + t('home.last12') + '</span></div><div class="monthsel" id="monthsel" aria-live="polite"></div><div class="months">' +
+    d.months.map((m) => '<button type="button" class="c ' + (m.month === curMonth ? 'cur' : '') + '" data-act="monthsel" data-m="' + m.month + '" data-a="' + m.amount + '" aria-pressed="false" aria-label="' + esc(MONTHS_LONG[lang][Number(m.month.slice(5)) - 1] + ' ' + m.month.slice(0, 4) + ': ' + money(m.amount)) + '"><div class="bar" style="height:' + Math.round(m.amount / maxMonth * 100) + '%"></div><div class="lb">' + MONTHS[lang][Number(m.month.slice(5)) - 1] + '</div></button>').join('') +
     '</div></div>' +
     (ver.version ? '<div class="verline"><button class="verbtn" data-act="notes" title="' + esc(t('ver.open')) + '">Cyklo ' + esc(ver.version) + '</button><button class="starbtn" data-act="egg" aria-label="' + esc(t('egg.btn')) + '" title="' + esc(t('egg.btn')) + '">★</button></div>' : ''));
 }
@@ -288,7 +308,7 @@ async function viewSubs() {
   const tab = (s) => '<button data-act="substab" data-v="' + s + '" class="' + (f.status === s ? 'on' : '') + '">' + t('subs.tab.' + s) + ' (' + count(s) + ')</button>';
   const qs = '?status=' + f.status + '&cat=' + f.cat + '&q=' + encodeURIComponent(f.q);
   page('subs',
-    '<h1>' + t('nav.subs') + '</h1><div class="toolbar"><div class="seg">' + ['all', 'active', 'paused', 'cancelled'].map(tab).join('') + '</div>' +
+    '<h1>' + t('nav.subs') + '</h1><div class="toolbar"><div class="seg">' + ['all', 'active', 'paused', 'cancelled', 'completed'].filter((x) => x !== 'completed' || count('completed') > 0 || f.status === 'completed').map(tab).join('') + '</div>' +
     '<div class="f"><label for="q">' + t('subs.search') + '</label><input class="inp pill" id="q" type="search" style="width:200px" placeholder="' + esc(t('subs.searchPh')) + '" value="' + esc(f.q) + '">' +
     '<label for="cat">' + t('subs.category') + '</label><select class="sel pill" id="cat"><option value="">' + t('subs.allCats') + '</option>' +
     lists.categories.map((c) => '<option value="' + c.id + '"' + (String(c.id) === f.cat ? ' selected' : '') + '>' + esc(c.name) + '</option>').join('') + '</select></div></div>' +
@@ -339,6 +359,11 @@ async function viewReports() {
   $('#rst').addEventListener('change', (e) => { f.status = e.target.value; f.open = null; render(); });
 }
 
+function dayRows(evs) {
+  return evs.map((e) => '<div class="row go" data-go="#/edit/' + e.subId + '" tabindex="0" role="link" style="margin-top:6px"><div class="main"><div><div class="t">' + esc(e.title) + '</div><div class="m">' +
+    (e.amount === null ? t('state.' + (e.state === 'missing' ? 'missing' : 'awaiting')) : (e.state === 'upcoming' ? t('cal.upcoming') : t('cal.charged'))) + '</div></div></div><div class="amt">' + (e.amount !== null ? money(e.amount) : '—') + '</div></div>').join('');
+}
+
 async function viewCalendar() {
   const f = ui.cal;
   const now = todayStr();
@@ -349,6 +374,7 @@ async function viewCalendar() {
   const lead = (first.getUTCDay() + 6) % 7;
   const byDate = {};
   c.events.forEach((e) => { (byDate[e.date] = byDate[e.date] || []).push(e); });
+  ui.cal.byDate = byDate;
   if (!f.sel || f.sel.slice(0, 7) !== f.month) f.sel = (now.slice(0, 7) === f.month) ? now : f.month + '-01';
   const evLabel = (e) => e.title + (e.amount !== null ? ' ' + money(e.amount) : '');
   let cells = '';
@@ -361,8 +387,7 @@ async function viewCalendar() {
     cells += '<button class="day ' + (out ? 'out ' : '') + (ds === now ? 'today ' : '') + (ds === f.sel ? 'sel' : '') + '" data-act="calsel" data-d="' + ds + '"><div class="n">' + dt.getUTCDate() + '</div>' + chips + '</button>';
   }
   const selEvents = byDate[f.sel] || [];
-  const selHtml = selEvents.length ? selEvents.map((e) => '<div class="row go" data-go="#/edit/' + e.subId + '" tabindex="0" role="link" title="' + esc(t('row.open')) + '" style="margin-top:6px"><div class="main"><div><div class="t">' + esc(e.title) + '</div><div class="m">' +
-    (e.amount === null ? t('state.' + (e.state === 'missing' ? 'missing' : 'awaiting')) : (e.state === 'upcoming' ? t('cal.upcoming') : t('cal.charged'))) + '</div></div></div><div class="amt">' + (e.amount !== null ? money(e.amount) : '—') + '</div></div>').join('') : '<div class="sub">' + t('cal.noPay') + '</div>';
+  const selHtml = selEvents.length ? dayRows(selEvents) : '<div class="sub">' + t('cal.noPay') + '</div>';
   page('calendar',
     '<div class="toolbar"><div class="monthnav"><h1>' + MONTHS_LONG[lang][m - 1] + ' ' + y + '</h1><button class="btn" data-act="calmove" data-v="-1" aria-label="' + t('cal.prev') + '">‹</button><button class="btn" data-act="calmove" data-v="1" aria-label="' + t('cal.next') + '">›</button><button class="btn" data-act="caltoday">' + t('cal.today') + '</button></div></div>' +
     '<div class="cal"><div class="glass card grid"><div class="dow">' + DOW[lang].map((d) => '<div>' + d + '</div>').join('') + '</div><div class="days">' + cells + '</div>' +
@@ -394,11 +419,15 @@ async function viewForm(id) {
     '<div class="grid2"><div class="field"><label for="company">' + t('form.company') + '</label><input class="inp" id="company" maxlength="80" placeholder="' + esc(t('form.companyPh')) + '" value="' + esc(s.company) + '"></div>' +
     '<div class="field"><label for="service">' + t('form.service') + '</label><input class="inp" id="service" maxlength="80" placeholder="' + esc(t('form.servicePh')) + '" value="' + esc(s.service) + '"></div></div>' +
     field('<label for="category">' + t('form.category') + '</label>', '<select class="sel" id="category">' + sel(lists.categories.map((c) => [c.id, c.name]), s.categoryId) + '<option value="__new">+ ' + esc(t('form.newCat')) + '</option></select>', t('form.categoryTip')) +
-    '<div class="field"><div class="lab">' + t('form.amountType') + tip(t('form.amountTypeTip'), t('form.amountType')) + '</div><div class="seg"><button type="button" data-act="atype" data-v="fixed" id="atFixed">' + t('type.fixed') + '</button><button type="button" data-act="atype" data-v="variable" id="atVar">' + t('type.variable') + '</button></div></div>' +
+    '<div class="field"><div class="lab">' + t('form.amountType') + tip(t('form.amountTypeTip'), t('form.amountType')) + '</div><div class="seg"><button type="button" data-act="atype" data-v="fixed" id="atFixed">' + t('type.fixed') + '</button><button type="button" data-act="atype" data-v="variable" id="atVar">' + t('type.variable') + '</button><button type="button" data-act="atype" data-v="installments" id="atInst">' + t('type.installments') + '</button></div></div>' +
     '<div class="field" id="costBox"><label for="cost">' + t('form.cost') + ' (' + SYMBOL[settings.currency] + ')</label><input class="inp" id="cost" style="max-width:240px" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00" value="' + (s.amount ?? '') + '"></div>' +
+    '<div class="subbox" id="instBox"><div class="grid2"><div class="field"><label for="instAmt">' + t('inst.amount') + ' (' + SYMBOL[settings.currency] + ')</label><input class="inp" id="instAmt" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00" value="' + (s.amountType === 'installments' ? (s.amount ?? '') : '') + '"></div>' +
+    '<div class="field"><label for="instCnt">' + t('inst.count') + '</label><input class="inp" id="instCnt" type="text" inputmode="numeric" autocomplete="off" placeholder="12" value="' + (s.installments || '') + '"></div></div>' +
+    '<div class="field"><div class="lab"><label for="instPrice">' + t('inst.price') + ' (' + SYMBOL[settings.currency] + ') <span class="opt">' + t('inst.optional') + '</span></label>' + tip(t('inst.priceTip'), t('inst.price')) + '</div><input class="inp" id="instPrice" style="max-width:240px" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00" value="' + (s.purchasePrice ?? '') + '"></div>' +
+    '<div class="instsum" id="instSum"></div></div>' +
     '<div class="note" id="varNote"><i></i>' + t('form.varNote') + '</div>' +
     '<div class="grid2">' + field('<label for="freq">' + t('form.frequency') + '</label>', '<select class="sel" id="freq">' + sel(['monthly', 'annual', 'quarterly', 'semiannual', 'weekly'].map((f) => [f, t('freq.' + f)]), s.frequency) + '</select>', t('form.frequencyTip')) +
-    field('<label for="start">' + t('form.start') + '</label>', dateField('start', s.startDate), t('form.startTip')) + '</div>' +
+    field('<label for="start" id="startLab">' + t('form.start') + '</label>', dateField('start', s.startDate), t('form.startTip')) + '</div>' +
     '<div id="nextAuto" style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:14px;margin-top:-8px"><span class="sub">' + t('form.next') + ':</span>' + tip(t('form.nextTip'), t('form.next')) + '<b id="nextText"></b><button type="button" class="btn link" data-act="manual">' + t('form.change') + '</button></div>' +
     '<div id="nextManual" style="display:none;flex-wrap:wrap;align-items:center;gap:10px;margin-top:-8px"><label for="manualDate" class="sub">' + t('form.next') + ':</label>' + dateField('manualDate', s.manualDate) + '<button type="button" class="btn link" data-act="manual">' + t('form.auto') + '</button></div>' +
     field('<label for="method">' + t('form.method') + '</label>', '<select class="sel" id="method">' + sel([['card', t('method.card')], ['paypal', t('method.paypal')], ['applepay', t('method.applepay')]].concat(lists.methods.map((m) => ['c' + m.id, m.name])), s.method) + '<option value="__new">+ ' + esc(t('form.newMethod')) + '</option></select>') +
@@ -415,23 +444,58 @@ async function viewForm(id) {
   let atype = s.amountType;
   let manual = !!s.manualNext;
   let manualSet = !!s.manualDate;
+  const instNext = () => {
+    const n = Math.min(360, Math.max(0, parseInt($('#instCnt').value, 10) || 0));
+    if (!n) return t('form.noNext');
+    const info = instInfo(dv('start'), n);
+    return info.next ? fdateLong(info.next) : t('status.completed');
+  };
+  const instSummary = () => {
+    const out = $('#instSum');
+    const amt = num($('#instAmt').value), price = num($('#instPrice').value);
+    const n = Math.min(360, Math.max(0, parseInt($('#instCnt').value, 10) || 0));
+    if (atype !== 'installments' || !(amt > 0 && n > 0)) { out.innerHTML = ''; return; }
+    const info = instInfo(dv('start'), n);
+    const total = r2(amt * n);
+    const cell = (k, v) => '<div><span>' + esc(k) + '</span><b>' + esc(v) + '</b></div>';
+    const last = parts(info.last);
+    let h = cell(t('inst.total'), money(total));
+    if (price > 0) { const ex = r2(total - price); h += cell(t('inst.extra'), ex > 0 ? money(ex) : ex === 0 ? t('inst.interestFree') : '—'); }
+    h += cell(t('inst.paid'), t('inst.paidOf', info.paid, n)) + cell(t('inst.left'), instN(info.left) + ' · ' + money(r2(amt * info.left))) +
+      cell(t('inst.last'), MONTHS_LONG[lang][last.m] + ' ' + last.y);
+    out.innerHTML = h;
+  };
   const refresh = () => {
+    const inst = atype === 'installments';
     $('#atFixed').classList.toggle('on', atype === 'fixed');
     $('#atVar').classList.toggle('on', atype === 'variable');
+    $('#atInst').classList.toggle('on', inst);
     $('#costBox').style.display = atype === 'fixed' ? '' : 'none';
     $('#varNote').style.display = atype === 'variable' ? '' : 'none';
-    $('#nextAuto').style.display = manual ? 'none' : 'flex';
-    $('#nextManual').style.display = manual ? 'flex' : 'none';
+    $('#instBox').style.display = inst ? '' : 'none';
+    $('#startLab').textContent = inst ? t('form.startInst') : t('form.start');
+    $('#freq').disabled = inst;
+    if (inst) $('#freq').value = 'monthly';
+    $('#nextAuto').style.display = manual && !inst ? 'none' : 'flex';
+    $('#nextManual').style.display = manual && !inst ? 'flex' : 'none';
+    $('#nextAuto [data-act=manual]').style.display = inst ? 'none' : '';
     $('#cardBox').style.display = $('#method').value === 'card' ? '' : 'none';
-    $('#nextText').textContent = nextCalc();
-    if (manual && !manualSet) { setdv('manualDate', dstr(nextOnOrAfter(dv('start'), $('#freq').value, todayStr()))); manualSet = true; }
+    $('#nextText').textContent = inst ? instNext() : nextCalc();
+    instSummary();
+    if (manual && !inst && !manualSet) { setdv('manualDate', dstr(nextOnOrAfter(dv('start'), $('#freq').value, todayStr()))); manualSet = true; }
   };
   const form = $('#form');
   form.addEventListener('click', async (e) => {
     const b = e.target.closest('[data-act]');
     if (!b) return;
     const act = b.dataset.act;
-    if (act === 'atype') { atype = b.dataset.v; refresh(); }
+    if (act === 'atype') {
+      const prevType = atype;
+      atype = b.dataset.v;
+      if (atype === 'installments' && prevType === 'fixed' && !$('#instAmt').value && $('#cost').value) $('#instAmt').value = $('#cost').value;
+      if (atype === 'fixed' && prevType === 'installments' && !$('#cost').value && $('#instAmt').value) $('#cost').value = $('#instAmt').value;
+      refresh();
+    }
     if (act === 'manual') { manual = !manual; refresh(); }
     if (act === 'stset') {
       try { await api('/subs/' + id + '/status', { method: 'POST', body: { status: b.dataset.v } }); toast(t('saved')); render(); } catch (er) { toast(errText(er), true); }
@@ -444,8 +508,10 @@ async function viewForm(id) {
     if (act === 'savesub') {
       const body = {
         company: $('#company').value, service: $('#service').value, categoryId: Number($('#category').value), amountType: atype,
-        amount: atype === 'fixed' ? parseFloat(String($('#cost').value).replace(',', '.')) : null,
-        frequency: $('#freq').value, startDate: dv('start'), manualNext: manual, manualDate: manual ? dv('manualDate') : '',
+        amount: atype === 'fixed' ? parseFloat(String($('#cost').value).replace(',', '.')) : atype === 'installments' ? parseFloat(String($('#instAmt').value).replace(',', '.')) : null,
+        installments: atype === 'installments' ? (parseInt($('#instCnt').value, 10) || 0) : 0,
+        purchasePrice: atype === 'installments' && num($('#instPrice').value) > 0 ? num($('#instPrice').value) : null,
+        frequency: atype === 'installments' ? 'monthly' : $('#freq').value, startDate: dv('start'), manualNext: manual && atype !== 'installments', manualDate: manual && atype !== 'installments' ? dv('manualDate') : '',
         method: $('#method').value, cardId: $('#method').value === 'card' ? Number($('#cardId').value) : 0,
         remindDays: Number($('#remind').value), remindEmail: EMAIL_UI ? $('#rEmail').checked : s.remindEmail, remindPush: $('#rPush').checked, notes: $('#notes').value,
       };
@@ -458,6 +524,7 @@ async function viewForm(id) {
     }
   });
   ['#freq', '#start', '#method', '#manualDate'].forEach((sel2) => $(sel2).addEventListener('change', refresh));
+  ['#instAmt', '#instCnt', '#instPrice'].forEach((sel2) => $(sel2).addEventListener('input', () => { $('#nextText').textContent = atype === 'installments' ? instNext() : $('#nextText').textContent; instSummary(); }));
   // "+ New ..." entries of the category and payment method lists
   [['#category', '/categories', 'form.newCat'], ['#method', '/methods', 'form.newMethod']].forEach(([sid, path, label]) => {
     const el = $(sid);
@@ -720,6 +787,7 @@ document.addEventListener('click', async (e) => {
   const go = e.target.closest('[data-go]');
   if (go && !e.target.closest('button, a, input, select')) {
     ui.returnTo = location.hash || '#/';
+    $$('.modal').forEach((m) => m.remove());
     location.hash = go.dataset.go;
     return;
   }
@@ -742,7 +810,27 @@ document.addEventListener('click', async (e) => {
     else if (act === 'record') recordFlow(Number(b.dataset.id), render);
     else if (act === 'repview') { ui.rep.view = v; ui.rep.open = null; render(); }
     else if (act === 'repopen') { ui.rep.open = ui.rep.open === b.dataset.k ? null : b.dataset.k; render(); }
-    else if (act === 'calsel') { ui.cal.sel = b.dataset.d; render(); }
+    else if (act === 'calsel') {
+      ui.cal.sel = b.dataset.d;
+      await render();
+      // when the day card is below the grid (narrow screens) it is out of sight: show the day in a window
+      const side = $('.cal .side'), grid = $('.cal .grid');
+      const evs = (ui.cal.byDate || {})[ui.cal.sel] || [];
+      if (side && grid && side.offsetTop > grid.offsetTop + 10 && evs.length) {
+        await modal({ title: fdateLong(ui.cal.sel), body: '<div style="max-height:55vh;overflow:auto">' + dayRows(evs) + '</div>', actions: [{ label: t('notes.close'), cls: 'primary', value: null }] });
+      }
+    }
+    else if (act === 'monthsel') {
+      const was = b.classList.contains('sel');
+      $$('.months .c').forEach((x) => { x.classList.remove('sel'); x.setAttribute('aria-pressed', 'false'); });
+      const out = $('#monthsel');
+      if (was) out.innerHTML = '';
+      else {
+        b.classList.add('sel'); b.setAttribute('aria-pressed', 'true');
+        const mm = b.dataset.m.split('-').map(Number);
+        out.innerHTML = '<span>' + MONTHS_LONG[lang][mm[1] - 1] + ' ' + mm[0] + '</span><b>' + money(Number(b.dataset.a)) + '</b>';
+      }
+    }
     else if (act === 'calmove') {
       const [y, m] = ui.cal.month.split('-').map(Number);
       const d = new Date(Date.UTC(y, m - 1 + Number(v), 1));

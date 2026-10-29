@@ -101,6 +101,7 @@ nav.top .r{display:flex;align-items:center;gap:10px}
 .chip{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600}
 .chip.active{background:rgba(150,230,190,.6);color:#0b4a2c}
 .chip.paused,.chip.awaiting{background:rgba(255,224,150,.7);color:var(--amber-ink)}
+.chip.completed{background:rgba(190,200,245,.7);color:#262e6b}
 .chip.cancelled{background:rgba(220,222,232,.8);color:#33364a}
 .chip.missing{background:rgba(255,170,160,.6);color:#6e1409}
 .head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
@@ -118,7 +119,14 @@ nav.top .r{display:flex;align-items:center;gap:10px}
 .track{height:10px;border-radius:999px;background:rgba(255,255,255,.6)}
 .fill{height:10px;border-radius:999px}
 .months{display:flex;align-items:flex-end;gap:10px;height:140px;margin-top:16px}
-.months .c{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%;min-width:0}
+.months .c{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%;min-width:0;background:none;border:0;padding:0;cursor:pointer}
+.months .c.sel .bar{background:rgba(10,91,196,.95);box-shadow:0 2px 10px rgba(10,91,196,.35)}
+.months .c.sel .lb{color:var(--ink);font-weight:600}
+.months .c:hover .bar{background:rgba(10,91,196,.75)}
+.monthsel{min-height:34px;margin-top:10px;display:flex;align-items:baseline;gap:10px}
+.monthsel:not(:empty){padding:6px 16px;border-radius:999px;background:rgba(77,111,232,.14);width:fit-content;min-height:34px;align-items:center}
+.monthsel:empty{min-height:34px}
+.monthsel span{font-size:13px;color:var(--ink2)}.monthsel b{font-size:18px}
 .months .bar{width:100%;min-height:3px;border-radius:10px 10px 4px 4px;background:rgba(77,111,232,.55);border:1px solid rgba(255,255,255,.8)}
 .months .c.cur .bar{background:rgba(10,91,196,.85)}
 .months .lb{font-size:11px;color:var(--ink3)}
@@ -225,3 +233,9 @@ nav.top .r{display:flex;align-items:center;gap:10px}
 @media (prefers-reduced-motion:reduce){.egghead span{animation:none}.go,.starbtn{transition:none}}
 
 .modal.wide .box{max-width:min(760px,100%)}
+
+.opt{font-weight:400;color:var(--ink3)}
+.instsum{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;padding:12px 14px;border-radius:16px;background:rgba(77,111,232,.12)}
+.instsum:empty{display:none}
+.instsum span{display:block;font-size:12px;color:var(--ink2)}
+.instsum b{font-size:16px;font-weight:600}

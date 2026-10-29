@@ -2,6 +2,12 @@
 
 The in-app list (`app/web/changelog.js`, shown after an update and in Settings) is the Greek/English source; this file is a short English copy. Add an entry to both for every new version.
 
+## 0.2.0
+- New amount type "Installment plan": fixed monthly amount, number of installments (1-360) and first-installment date. The row shows "Installment 4 of 12"; the optional purchase price shows the extra cost of the installments (the difference, not an interest rate; "Interest-free" when zero). A down payment is not part of the plan. After the last installment the item becomes "Completed" and is left out of month totals, reminders, upcoming payments and the active count; its history stays in reports and the calendar.
+- Chart "Expenses by month": click or tap a column to show the month and amount; a second click clears it.
+- Calendar on narrow screens (phones): tapping a day with entries opens a window with all of its entries.
+- "Subscriptions" renamed to "Recurring" (menu, titles, forms, messages, exports). Stored data and backups are unchanged and compatible.
+
 ## 0.1.8
 - Repeated reminder when a variable-amount bill is missing: repeat interval (1, 2, 3, 5 or 7 days; default 3) and maximum number of reminders (1, 2, 3 or 5; default 3) in Settings → Notifications.
 - Fix: a reminder that no channel could deliver is no longer marked as sent.

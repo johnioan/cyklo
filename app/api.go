@@ -54,7 +54,11 @@ func (d *Data) subView(s *Sub, t time.Time) SubView {
 	if s.Service != "" {
 		title += " · " + s.Service
 	}
-	return SubView{Sub: *s, Title: title, CategoryName: d.category(s.CategoryID), CardName: d.card(s.CardID), MethodName: d.customMethod(s.Method), Next: nextInfo(s, t)}
+	sv := SubView{Sub: *s, Title: title, CategoryName: d.category(s.CategoryID), CardName: d.card(s.CardID), MethodName: d.customMethod(s.Method), Next: nextInfo(s, t)}
+	if s.Status == StatusActive && sv.Next.State == "completed" {
+		sv.Status = StatusCompleted
+	}
+	return sv
 }
 
 type publicSettings struct {
@@ -120,17 +124,37 @@ func validateSub(d *Data, s *Sub) error {
 	if d.category(s.CategoryID) == "" {
 		return errors.New("category")
 	}
-	if s.AmountType != TypeFixed && s.AmountType != TypeVariable {
+	if s.AmountType != TypeFixed && s.AmountType != TypeVariable && s.AmountType != TypeInstallments {
 		return errors.New("amountType")
 	}
-	if s.AmountType == TypeFixed {
-		if s.Amount == nil || *s.Amount < 0 {
+	if s.AmountType == TypeFixed || s.AmountType == TypeInstallments {
+		if s.Amount == nil || *s.Amount < 0 || (s.AmountType == TypeInstallments && *s.Amount == 0) {
 			return errors.New("amount")
 		}
 		v := round2(*s.Amount)
 		s.Amount = &v
 	} else {
 		s.Amount = nil
+	}
+	if s.AmountType == TypeInstallments {
+		if s.Installments < 1 || s.Installments > 360 {
+			return errors.New("installments")
+		}
+		if s.PurchasePrice != nil {
+			if *s.PurchasePrice < 0 {
+				return errors.New("purchasePrice")
+			}
+			if v := round2(*s.PurchasePrice); v > 0 {
+				s.PurchasePrice = &v
+			} else {
+				s.PurchasePrice = nil
+			}
+		}
+		s.Frequency = FreqMonthly
+		s.ManualNext = false
+	} else {
+		s.Installments = 0
+		s.PurchasePrice = nil
 	}
 	if !validFreq(s.Frequency) {
 		return errors.New("frequency")
@@ -384,8 +408,11 @@ func (a *API) dashboard(w http.ResponseWriter, r *http.Request) {
 			if s.Status != StatusActive {
 				continue
 			}
-			active++
 			sv := d.subView(s, t)
+			if sv.Status != StatusActive {
+				continue
+			}
+			active++
 			if s.AmountType == TypeVariable {
 				if due, ok := parseDate(s.DueDate); ok && !due.After(cur) {
 					missing++
